@@ -88,6 +88,7 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
 							variant='contained'
 							sx={{
 								backgroundColor: '#F25672',
+								borderRadius: 10,
 								'&:hover': { backgroundColor: '#D93F5C' },
 							}}
 						>
