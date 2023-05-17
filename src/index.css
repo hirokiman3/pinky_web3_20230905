@@ -5,6 +5,7 @@
 body {
 	font-family: 'Poppins', sans-serif;
 	padding-bottom: 10rem;
+	transition: 300ms;
 }
 /* Darkmode styling */
 body.dark-mode {
