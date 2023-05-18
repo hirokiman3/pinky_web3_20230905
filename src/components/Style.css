@@ -14,3 +14,11 @@
 		opacity: 0;
 	}
 }
+
+/* Button*/
+body.dark-mode .MuiButton-contained {
+	color: #fff !important;
+}
+body.bright-mode .MuiButton-contained {
+	color: #333 !important;
+}

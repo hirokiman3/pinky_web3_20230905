@@ -4,9 +4,10 @@ import { Box, Container } from '@mui/material'
 import './Style.css'
 import Lottie from 'lottie-react'
 import Robot from '../../assets/lottie-animations/robot.json'
+import DiscordIcon from '../../components/Icons/DiscordIcon'
 
 function Hero({ isDarkMode }) {
-	const typeWriter = ['efficiency', 'flowchart', 'watermelons', 'brains']
+	const typeWriter = ['Efficiency.', 'Flowchart.', 'Watermelons.', 'Brains.']
 
 	return (
 		<Container sx={{ textAlign: 'center' }}>
@@ -33,7 +34,10 @@ function Hero({ isDarkMode }) {
 					advertising, and blogs 10X faster.
 				</p>
 			</Box>
-			<button className='cta'>Join Discord</button>
+			<button className='cta'>
+				<DiscordIcon height='20px' width='20px' />
+				Join Discord
+			</button>
 		</Container>
 	)
 }

@@ -1,4 +1,8 @@
 .cta {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 5px;
 	background-color: #5662f6;
 	border: transparent;
 	padding: 10px 20px;
@@ -9,6 +13,7 @@
 	border-radius: 20px;
 	cursor: pointer;
 	transition: 300ms;
+	margin: 0 auto;
 }
 .cta:hover {
 	background-color: #353dad;

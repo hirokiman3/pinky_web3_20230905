@@ -1,7 +1,7 @@
-import { Box, Container, Button, Switch } from '@mui/material'
-import brightLogo from '../assets/images/logo_white.png'
-import darkLogo from '../assets/images/logo.png'
+import { Box, Container, Switch } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import ConnectButton from './ConnectButton'
+import Logo from './Logo'
 
 function Navbar({ isDarkMode, setIsDarkMode }) {
 	const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -71,29 +71,14 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
 						textAlign: { xs: 'center', sm: 'left' },
 					}}
 				>
-					<Box sx={{ maxWidth: 120 }}>
-						<img
-							src={isDarkMode ? brightLogo : darkLogo}
-							className='img-fluid'
-							alt=''
-						/>
-					</Box>
+					<Logo sx={{ maxWidth: 120 }} isDarkMode={isDarkMode} />
 					<Box>
 						<MaterialUISwitch
 							sx={{ m: 1 }}
 							checked={isDarkMode}
 							onChange={handleModeChange}
 						/>
-						<Button
-							variant='contained'
-							sx={{
-								backgroundColor: '#F25672',
-								borderRadius: 10,
-								'&:hover': { backgroundColor: '#D93F5C' },
-							}}
-						>
-							Connect Wallet
-						</Button>
+						<ConnectButton />
 					</Box>
 				</Box>
 			</Container>
