@@ -23,7 +23,16 @@ function Hero({ isDarkMode }) {
 			>
 				<h1 style={{ margin: 0 }}>
 					AI-powered chatbot for creating
-					<Box component='div' sx={{ color: '#E04562' }}>
+					<Box
+						component='div'
+						sx={{
+							color: '#E04562',
+							fontFamily: 'Dancing Script',
+							fontSize: 80,
+							fontWeight: 700,
+							marginTop: -2,
+						}}
+					>
 						<TypeWriter data={typeWriter} isDarkMode={isDarkMode} />
 					</Box>
 				</h1>
@@ -35,8 +44,8 @@ function Hero({ isDarkMode }) {
 				</p>
 			</Box>
 			<button className='cta'>
-				<DiscordIcon height='20px' width='20px' />
-				Join Discord
+				<DiscordIcon size='24px' />
+				Discord
 			</button>
 		</Container>
 	)

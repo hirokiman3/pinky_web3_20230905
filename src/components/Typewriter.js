@@ -75,7 +75,7 @@ class TypeWriter extends React.PureComponent {
 					className='blinking-cursor'
 					style={{ animation: `blinkCursor 1s infinite`, color: cursorColor }}
 				>
-					&nbsp;|
+					|
 				</span>
 			</span>
 		)
