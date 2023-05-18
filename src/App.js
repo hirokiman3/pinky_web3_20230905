@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import Landing from './pages/landing/Landing'
 
 function App() {
-	const [isDarkMode, setIsDarkMode] = useState(true)
+	const [isDarkMode, setIsDarkMode] = useState(false)
 	return (
 		<>
 			<Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
