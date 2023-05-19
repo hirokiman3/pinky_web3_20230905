@@ -12,7 +12,7 @@ function ConnectButton({ isDarkMode }) {
 				'&:hover': { backgroundColor: '#D93F5C' },
 			}}
 		>
-			Connect Wallet
+			Dashboard
 		</Button>
 	)
 }

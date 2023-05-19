@@ -1,9 +1,13 @@
 import { Box, Container, Switch } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import ConnectButton from './ConnectButton'
+import DashboardButton from './DashboardButton'
 import Logo from './Logo'
+import AccountMenu from './AccountMenu'
+import { Context } from '../App'
+import { useContext } from 'react'
 
-function Navbar({ isDarkMode, setIsDarkMode }) {
+function Navbar({ setIsDarkMode, isLogged }) {
+	const { isDarkMode } = useContext(Context)
 	const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 		width: 62,
 		height: 34,
@@ -71,14 +75,20 @@ function Navbar({ isDarkMode, setIsDarkMode }) {
 						textAlign: { xs: 'center', sm: 'left' },
 					}}
 				>
-					<Logo sx={{ maxWidth: 120 }} isDarkMode={isDarkMode} />
-					<Box>
+					<Logo
+						sx={{
+							maxWidth: 120,
+							'&:hover': { cursor: 'pointer' },
+						}}
+						isDarkMode={isDarkMode}
+					/>
+					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						<MaterialUISwitch
 							sx={{ m: 1 }}
 							checked={isDarkMode}
 							onChange={handleModeChange}
 						/>
-						<ConnectButton />
+						{isLogged ? <AccountMenu /> : <DashboardButton />}
 					</Box>
 				</Box>
 			</Container>

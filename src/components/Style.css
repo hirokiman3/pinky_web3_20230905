@@ -22,3 +22,66 @@ body.dark-mode .MuiButton-contained {
 body.bright-mode .MuiButton-contained {
 	color: #333 !important;
 }
+
+/* Drawer */
+.drawer-menu {
+	list-style: none;
+	display: flex;
+	padding: 0;
+	flex-direction: column;
+}
+.drawer-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-basis: 100%;
+	padding: 12px;
+	font-size: 14px;
+	border-radius: 5px;
+	transition: 200ms;
+	cursor: pointer;
+}
+.drawer-item .metadata {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+.drawer-item .controls {
+	opacity: 0;
+	pointer-events: none;
+	transition: 200ms;
+	display: flex;
+	gap: 1px;
+}
+
+.drawer-item.active .controls {
+	opacity: 1;
+	pointer-events: all;
+}
+.drawer-item.new-chat {
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	margin-bottom: 20px;
+	padding: 10px;
+}
+.drawer-item.new-chat:hover {
+	background-color: #2b2c2f;
+}
+.drawer-item a {
+	color: #fff;
+	text-decoration: none;
+	font-family: Poppins;
+	font-weight: 300;
+}
+.drawer-item.chat:hover {
+	background-color: #2a2b32;
+}
+.drawer-footer {
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.drawer-item.active {
+	background-color: #343541;
+}
+.drawer-item.active:hover {
+	background-color: #343541;
+}

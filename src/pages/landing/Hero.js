@@ -1,34 +1,40 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TypeWriter from '../../components/Typewriter'
 import { Box, Container } from '@mui/material'
 import './Style.css'
 import Lottie from 'lottie-react'
-import Robot from '../../assets/lottie-animations/robot.json'
+import HeroAnimation from '../../assets/lottie-animations/hero-animation.json'
 import DiscordIcon from '../../components/Icons/DiscordIcon'
 
-function Hero({ isDarkMode }) {
+function Hero() {
+	const isDarkMode = useContext('ThemeContext')
 	const typeWriter = ['Efficiency.', 'Flowchart.', 'Watermelons.', 'Brains.']
 
 	return (
 		<Container sx={{ textAlign: 'center' }}>
-			<Lottie
-				animationData={Robot}
-				style={{ width: 300, height: 250, margin: '0 auto', marginTop: -20 }}
-			/>
 			<Box
 				sx={{
-					fontSize: { sx: 20, sm: 25 },
-					marginTop: -5,
+					margin: '0 auto',
+					marginTop: { sx: 0, sm: -8 },
+					width: { xs: 200, md: 280 },
+				}}
+			>
+				<Lottie animationData={HeroAnimation} />
+			</Box>
+			<Box
+				sx={{
+					fontSize: { xs: 15, sm: 25 },
+					marginTop: -3,
 				}}
 			>
 				<h1 style={{ margin: 0 }}>
-					AI-powered chatbot for creating
+					AI Generator for minting
 					<Box
 						component='div'
 						sx={{
 							color: '#E04562',
 							fontFamily: 'Dancing Script',
-							fontSize: 80,
+							fontSize: { xs: 60, sm: 80 },
 							fontWeight: 700,
 							marginTop: -2,
 						}}
