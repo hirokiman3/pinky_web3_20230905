@@ -1,7 +1,13 @@
-import * as React from 'react'
+import { useState } from 'react'
 import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
-import { useTheme, useMediaQuery } from '@mui/material'
+import {
+	useTheme,
+	useMediaQuery,
+	Modal,
+	Box,
+	CircularProgress,
+} from '@mui/material'
 
 export default function NftGallery() {
 	const theme = useTheme()
@@ -18,19 +24,84 @@ export default function NftGallery() {
 		if (isXl) return 6
 		return 2 // Default column configuration
 	}
+	const [previewOpen, setPreviewOpen] = useState(false)
+	const [activeImage, setActiveImage] = useState(null)
+	const [imageLoaded, setImageLoaded] = useState(false)
+	const handlePreviewClose = () => {
+		setImageLoaded(false)
+		setPreviewOpen(false)
+	}
+	const handlePreview = e => {
+		console.log(e.target.src.split('?')[0])
+		setActiveImage(e.target.src.split('?')[0])
+		setPreviewOpen(true)
+	}
 	return (
-		<ImageList sx={{ width: '100%', height: '100%' }} cols={getCols()}>
-			{itemData.map(item => (
-				<ImageListItem key={item.img}>
+		<>
+			<ImageList sx={{ width: '100%', height: '100%' }} cols={getCols()}>
+				{itemData.map(item => (
+					<ImageListItem
+						key={item.img}
+						onClick={handlePreview}
+						sx={{
+							cursor: 'pointer',
+							overflow: 'hidden',
+							'& img': {
+								transition: '300ms',
+							},
+							'&:hover img': {
+								transition: '300ms',
+								transform: 'scale(1.1)',
+							},
+						}}
+					>
+						<img
+							src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+							srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+							alt={item.title}
+							loading='lazy'
+						/>
+					</ImageListItem>
+				))}
+			</ImageList>
+			<Modal
+				open={previewOpen}
+				onClose={handlePreviewClose}
+				disableScrollLock
+				sx={{ height: '100%' }}
+			>
+				<Box
+					sx={{
+						position: 'absolute',
+						top: 0,
+						bottom: 0,
+						left: 0,
+						right: 0,
+						display: 'grid',
+						placeContent: 'center',
+						height: 350,
+						width: { xs: 300, sm: 350 },
+						margin: 'auto',
+						backgroundColor: '#fff',
+						borderRadius: 5,
+						outline: 'none',
+						overflow: 'hidden',
+					}}
+				>
+					{!imageLoaded && <CircularProgress color='secondary' />}
 					<img
-						src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-						srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-						alt={item.title}
-						loading='lazy'
+						src={`${activeImage}`}
+						onLoad={() => setImageLoaded(true)}
+						style={{
+							display: imageLoaded ? 'block' : 'none',
+							height: '350px',
+							width: '100%',
+							objectFit: 'cover',
+						}}
 					/>
-				</ImageListItem>
-			))}
-		</ImageList>
+				</Box>
+			</Modal>
+		</>
 	)
 }
 
@@ -38,8 +109,6 @@ const itemData = [
 	{
 		img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
 		title: 'Breakfast',
-		rows: 2,
-		cols: 2,
 	},
 	{
 		img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
@@ -52,19 +121,14 @@ const itemData = [
 	{
 		img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
 		title: 'Coffee',
-		cols: 2,
 	},
 	{
 		img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
 		title: 'Hats',
-		cols: 2,
 	},
 	{
 		img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
 		title: 'Honey',
-		author: '@arwinneil',
-		rows: 2,
-		cols: 2,
 	},
 	{
 		img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
@@ -77,8 +141,6 @@ const itemData = [
 	{
 		img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
 		title: 'Mushrooms',
-		rows: 2,
-		cols: 2,
 	},
 	{
 		img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
@@ -91,6 +153,5 @@ const itemData = [
 	{
 		img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
 		title: 'Bike',
-		cols: 2,
 	},
 ]
