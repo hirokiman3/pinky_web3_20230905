@@ -1,0 +1,7 @@
+body.dark-mode .nft-card {
+	background: rgba(255, 255, 255, 0.1) !important;
+	color: rgba(255, 255, 255, 0.8);
+}
+body .nft-card h4 {
+	font-weight: 400 !important;
+}

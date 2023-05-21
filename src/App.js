@@ -31,7 +31,6 @@ function App() {
 				isLogged={isLogged}
 				setIsLogged={setIsLogged}
 			/>
-
 			<Outlet />
 		</Context.Provider>
 	)

@@ -1,13 +1,9 @@
 import { useState } from 'react'
 import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
-import {
-	useTheme,
-	useMediaQuery,
-	Modal,
-	Box,
-	CircularProgress,
-} from '@mui/material'
+import { useTheme, useMediaQuery, Modal, Box, Skeleton } from '@mui/material'
+import './Styles.css'
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 
 export default function NftGallery() {
 	const theme = useTheme()
@@ -25,42 +21,78 @@ export default function NftGallery() {
 		return 2 // Default column configuration
 	}
 	const [previewOpen, setPreviewOpen] = useState(false)
-	const [activeImage, setActiveImage] = useState(null)
+	const [activeImage, setActiveImage] = useState({ src: '', title: '' })
 	const [imageLoaded, setImageLoaded] = useState(false)
 	const handlePreviewClose = () => {
 		setImageLoaded(false)
 		setPreviewOpen(false)
 	}
 	const handlePreview = e => {
-		console.log(e.target.src.split('?')[0])
-		setActiveImage(e.target.src.split('?')[0])
-		setPreviewOpen(true)
+		// Find the nearest image element by traversing up the DOM tree
+		const imageElement = e.currentTarget.querySelector('img')
+		// Check if an image element exists
+		if (imageElement) {
+			// Access the source of the image and remove any query parameters
+			const src = imageElement.src.split('?')[0]
+
+			// Set the active image and open the preview
+			setActiveImage({ src: src, title: e.target.alt })
+			setPreviewOpen(true)
+		}
 	}
+
 	return (
 		<>
-			<ImageList sx={{ width: '100%', height: '100%' }} cols={getCols()}>
+			<ImageList
+				sx={{ width: '100%', height: '100%', overflow: 'hidden' }}
+				cols={getCols()}
+			>
 				{itemData.map(item => (
 					<ImageListItem
 						key={item.img}
 						onClick={handlePreview}
 						sx={{
 							cursor: 'pointer',
-							overflow: 'hidden',
 							'& img': {
 								transition: '300ms',
 							},
-							'&:hover img': {
-								transition: '300ms',
-								transform: 'scale(1.1)',
-							},
+							// '&:hover img': {
+							// 	transition: '300ms',
+							// 	transform: 'scale(1.1)',
+							// },
 						}}
 					>
-						<img
-							src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-							srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-							alt={item.title}
-							loading='lazy'
-						/>
+						<Box
+							className='nft-card'
+							sx={{
+								backgroundColor: '#fff',
+								overflow: 'hidden',
+								minHeight: '200px',
+								padding: 1,
+								borderRadius: '10px',
+								boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+								transition: '200ms',
+								'&:hover': {
+									transform: 'rotate(2deg)',
+								},
+							}}
+						>
+							<img
+								src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+								srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+								alt={item.title}
+								loading='lazy'
+								style={{
+									width: '100%',
+									height: '200px',
+									objectFit: 'cover',
+									overflow: 'hidden',
+									borderRadius: '10px',
+									margin: 0,
+								}}
+							/>
+							<h4 style={{ margin: '3px 0' }}>{item.title}</h4>
+						</Box>
 					</ImageListItem>
 				))}
 			</ImageList>
@@ -69,36 +101,63 @@ export default function NftGallery() {
 				onClose={handlePreviewClose}
 				disableScrollLock
 				sx={{ height: '100%' }}
+				className='nft-modal'
 			>
 				<Box
 					sx={{
 						position: 'absolute',
-						top: 0,
-						bottom: 0,
-						left: 0,
-						right: 0,
-						display: 'grid',
-						placeContent: 'center',
-						height: 350,
-						width: { xs: 300, sm: 350 },
-						margin: 'auto',
-						backgroundColor: '#fff',
-						borderRadius: 5,
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
 						outline: 'none',
-						overflow: 'hidden',
 					}}
 				>
-					{!imageLoaded && <CircularProgress color='secondary' />}
-					<img
-						src={`${activeImage}`}
-						onLoad={() => setImageLoaded(true)}
-						style={{
-							display: imageLoaded ? 'block' : 'none',
-							height: '350px',
-							width: '100%',
-							objectFit: 'cover',
+					<Box
+						sx={{
+							minHeight: { md: 350 },
+							width: { xs: 300, sm: 350 },
+							margin: 'auto',
+							backgroundColor: '#fff',
+							borderRadius: 5,
+							outline: 'none',
+							padding: 2,
 						}}
-					/>
+					>
+						{!imageLoaded && (
+							<Skeleton variant='rectangular' width='100%' height={350} />
+						)}
+						<img
+							src={`${activeImage.src}`}
+							onLoad={() => setImageLoaded(true)}
+							style={{
+								display: imageLoaded ? 'block' : 'none',
+								height: '350px',
+								width: '100%',
+								objectFit: 'cover',
+								borderRadius: '10px',
+								overflow: 'hidden',
+							}}
+							alt='preview'
+						/>
+						<Box
+							component='div'
+							sx={{
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'space-between',
+								marginTop: 1,
+							}}
+						>
+							<h4 style={{ margin: '5px 0' }}>
+								{activeImage.title === undefined ? (
+									<Skeleton width={200} />
+								) : (
+									activeImage.title
+								)}
+							</h4>
+							<FavoriteBorderRoundedIcon sx={{ cursor: 'pointer' }} />
+						</Box>
+					</Box>
 				</Box>
 			</Modal>
 		</>
@@ -107,51 +166,51 @@ export default function NftGallery() {
 
 const itemData = [
 	{
-		img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-		title: 'Breakfast',
+		img: 'https://i.pinimg.com/736x/a7/3a/f7/a73af7c3f74533c2a862b9d5b6cc99e6.jpg',
+		title: 'Tiny Azuki',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-		title: 'Burger',
+		img: 'https://i.pinimg.com/originals/a2/84/9b/a2849b91cef95b39a62b45d943152cd1.jpg',
+		title: 'Makima',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-		title: 'Camera',
+		img: 'https://i.etsystatic.com/30251997/r/il/1aebd9/3715641872/il_fullxfull.3715641872_s24l.jpg',
+		title: 'Sealed',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-		title: 'Coffee',
+		img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpFXlOmDyzF-bsJJAIoyZAtSGImlnKsz-mln9YqonVXt-w86x3eysCRa-k4CLy4o7C3Lw&usqp=CAU',
+		title: 'Thorfin Ape',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-		title: 'Hats',
+		img: 'https://i.pinimg.com/736x/10/d2/31/10d2313d6f321909c93b61c332371d0a.jpg',
+		title: 'Rabbit Pizzaster',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-		title: 'Honey',
+		img: 'https://tiktechtalk.com/wp-content/uploads/2021/08/what-is-nft-1024x1024.png',
+		title: 'Chetosta',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-		title: 'Basketball',
+		img: 'https://fiverr-res.cloudinary.com/t_portfolio_project_grid,q_auto,f_auto,q_auto,f_auto/attachments/project_item/attachment/041fdfc49a6107766909e24e7b2636ce-1655888409840/Lalala3.png',
+		title: 'Street Doggo',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-		title: 'Fern',
+		img: 'https://images-platform.99static.com/9b_8yMSi0gm9CCfUFTm_ZQkUUTg=/0x0:2000x2000/500x500/top/smart/99designs-contests-attachments/130/130669/attachment_130669166',
+		title: 'Gallactic Dog',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-		title: 'Mushrooms',
+		img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2DBQ13fgM7JtwWYPb8uJBA4meNwMVIPrnb0gG5IimiuVgJVsJRy0o0pdiyflflGT9qV4&usqp=CAU',
+		title: 'Pixels Freak',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-		title: 'Tomato basil',
+		img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5P4Qb00yse7qpXZBEyjNZ8ym54ZHCbBNC-w&usqp=CAU',
+		title: 'Koala Beast',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-		title: 'Sea star',
+		img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfmWynylybGWHN6y6MdDHfJ_MpjofIop6WEQ&usqp=CAU',
+		title: 'Horoscopic Ape',
 	},
 	{
-		img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-		title: 'Bike',
+		img: 'https://i.pinimg.com/736x/9d/94/64/9d94641b3554c1ea2ede713a2650f362.jpg',
+		title: 'Tattoo Bunny',
 	},
 ]

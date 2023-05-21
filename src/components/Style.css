@@ -85,3 +85,59 @@ body.bright-mode .MuiButton-contained {
 .drawer-item.active:hover {
 	background-color: #343541;
 }
+
+.toggle-switch {
+	display: inline-block;
+	position: relative;
+	width: 58px;
+	height: 29px;
+}
+
+.toggle-input {
+	display: none;
+}
+
+.toggle-label {
+	position: absolute;
+	cursor: pointer;
+	background-color: #bdbdbd;
+	border-radius: 30px;
+	width: 100%;
+	height: 100%;
+	transition: background-color 0.3s;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 6px;
+	box-sizing: border-box;
+}
+.toggle-label svg {
+	font-size: 20px;
+}
+.light-mode .toggle-label svg {
+	color: #001e3c;
+}
+.dark-mode .toggle-label svg {
+	color: #fff;
+}
+
+.toggle-input:checked + .toggle-label {
+	background-color: #f15672;
+}
+
+.toggle-label::before {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background-color: white;
+	transition: transform 0.3s;
+}
+
+.toggle-input:checked + .toggle-label::before {
+	transform: translateX(27px);
+}
