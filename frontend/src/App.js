@@ -45,5 +45,5 @@ function App() {
 		</Context.Provider>
 	)
 }
-
+serviceWorker.unregister()
 export default App
