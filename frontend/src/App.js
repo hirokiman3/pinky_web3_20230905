@@ -30,20 +30,19 @@ export const router = createBrowserRouter([
 export const Context = createContext()
 
 function App() {
-	const [isDarkMode, setIsDarkMode] = useState(false)
-	const [isLogged, setIsLogged] = useState(true)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isLogged, setIsLogged] = useState(true)
 
-	return (
-		<Context.Provider value={{ isDarkMode, isLogged }}>
-			<Navbar
-				isDarkMode={isDarkMode}
-				setIsDarkMode={setIsDarkMode}
-				isLogged={isLogged}
-				setIsLogged={setIsLogged}
-			/>
-			<Outlet />
-		</Context.Provider>
-	)
+  return (
+    <Context.Provider value={{ isDarkMode, isLogged }}>
+      <Navbar
+        isDarkMode={isDarkMode}
+        setIsDarkMode={setIsDarkMode}
+        isLogged={isLogged}
+        setIsLogged={setIsLogged}
+      />
+      <Outlet />
+    </Context.Provider>
+  )
 }
-serviceWorker.unregister()
 export default App
