@@ -4,6 +4,8 @@ import Landing from './pages/landing/Landing'
 import Prompt from './pages/prompt/Prompt'
 
 import { Outlet, createBrowserRouter } from 'react-router-dom'
+import SignUp from './pages/auth/SignUp'
+import SignIn from './pages/auth/SignIn'
 
 export const router = createBrowserRouter([
 	{
@@ -13,6 +15,14 @@ export const router = createBrowserRouter([
 			{ index: true, element: <Landing /> },
 			{ path: 'prompt', element: <Prompt /> },
 		],
+	},
+	{
+		path: '/signup',
+		element: <SignUp />,
+	},
+	{
+		path: '/signin',
+		element: <SignIn />,
 	},
 ])
 

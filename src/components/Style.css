@@ -15,14 +15,6 @@
 	}
 }
 
-/* Button*/
-body.dark-mode .MuiButton-contained {
-	color: #fff !important;
-}
-body.bright-mode .MuiButton-contained {
-	color: #333 !important;
-}
-
 /* Drawer */
 .drawer-menu {
 	list-style: none;

@@ -1,5 +1,4 @@
-import { Box, Container, Switch } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, Container } from '@mui/material'
 import DashboardButton from './DashboardButton'
 import Logo from './Logo'
 import AccountMenu from './AccountMenu'
