@@ -13,6 +13,9 @@ app.use(express.urlencoded({ extended: true }))
 
 mongoose
   .connect(process.env.MONGO_DB_URI, {
+    dbName: "pinky",
+    retryWrites: true,
+    w: "majority",
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
