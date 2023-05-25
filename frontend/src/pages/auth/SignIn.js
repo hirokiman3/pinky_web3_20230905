@@ -19,8 +19,6 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { signin } from '../../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import LoadingModal from '../../components/LoadingModal'
-import { CircularProgress } from '@mui/material'
 import Lottie from 'lottie-react'
 import LoadingAnim from '../../assets/lottie-animations/loading.json'
 

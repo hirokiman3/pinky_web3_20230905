@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux'
 import UserSettings from './pages/user/Settings'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Error404 from './pages/errors/Error404'
-import NftGallery from './components/NftGallery'
 import GeneratedNfts from './pages/user/GeneratedNfts'
 
 // Handle React Router DOM
