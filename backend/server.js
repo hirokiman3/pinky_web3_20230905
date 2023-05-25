@@ -25,7 +25,6 @@ mongoose
   .catch((err) => {
     console.log(err.message)
   })
-  
 app.use("/api/users", userRouter)
 // const __dirname = path.resolve()
 // app.use(express.static(path.join(__dirname, "/client/build")))
