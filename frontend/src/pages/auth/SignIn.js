@@ -68,7 +68,7 @@ export default function SignIn(props) {
 				<Box
 					sx={{
 						width: '100%',
-						height: '90vh',
+						height: '80vh',
 						overflow: 'hidden',
 						display: 'grid',
 						placeContent: 'center',
@@ -76,7 +76,7 @@ export default function SignIn(props) {
 					}}
 				>
 					<ErrorOutlineIcon fontSize='large' sx={{ margin: '10px auto' }} />
-					Error occured while logging
+					Error occured while logging. <Link to='/'>Homepage</Link>
 				</Box>
 			) : (
 				<Container component='main' maxWidth='xs'>
@@ -171,7 +171,7 @@ export default function SignIn(props) {
 							</Grid>
 						</Box>
 					</Box>
-					<Copyright sx={{ mt: 8, mb: 4 }} />
+					<Copyright sx={{ my: 4 }} />
 				</Container>
 			)}
 		</ThemeProvider>
@@ -184,6 +184,7 @@ function Copyright(props) {
 			variant='body2'
 			color='text.secondary'
 			align='center'
+			className='auth-footer'
 			{...props}
 		>
 			{'Copyright © '}

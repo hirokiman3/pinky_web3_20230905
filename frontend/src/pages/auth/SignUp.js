@@ -3,8 +3,8 @@ import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
+// import FormControlLabel from '@mui/material/FormControlLabel'
+// import Checkbox from '@mui/material/Checkbox'
 import { Link } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -113,7 +113,7 @@ export default function SignUp(props) {
 									autoComplete='new-password'
 								/>
 							</Grid>
-							<Grid item xs={12}>
+							{/* <Grid item xs={12}>
 								<FormControlLabel
 									control={
 										<Checkbox
@@ -128,7 +128,7 @@ export default function SignUp(props) {
 									}
 									label='I want to receive inspiration, marketing promotions and updates via email.'
 								/>
-							</Grid>
+							</Grid> */}
 						</Grid>
 						<Button
 							type='submit'
@@ -164,7 +164,7 @@ export default function SignUp(props) {
 						</Grid>
 					</Box>
 				</Box>
-				<Copyright sx={{ mt: 5 }} />
+				<Copyright sx={{ my: 4 }} />
 			</Container>
 		</ThemeProvider>
 	)
