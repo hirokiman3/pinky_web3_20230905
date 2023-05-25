@@ -1,23 +1,23 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { Button } from "@mui/material"
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from '@mui/material'
 
-function ConnectButton({ isDarkMode }) {
-  return (
-    <Link to='/signin'>
-      <Button
-        variant='contained'
-        sx={{
-          backgroundColor: "#F25672",
-          borderRadius: 10,
-          border: "transparent",
-          "&:hover": { backgroundColor: "#D93F5C" },
-        }}
-      >
-        Generate NFTs
-      </Button>
-    </Link>
-  )
+function ConnectButton() {
+	return (
+		<Link to='/signin'>
+			<Button
+				variant='contained'
+				sx={{
+					borderRadius: 10,
+					border: 'transparent',
+					fontWeight: 400,
+					whiteSpace: 'nowrap',
+				}}
+			>
+				Generate NFT
+			</Button>
+		</Link>
+	)
 }
 
 export default ConnectButton

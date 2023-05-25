@@ -10,7 +10,7 @@ export default function PromptField() {
 		<Box
 			component='form'
 			sx={{
-				marginBottom: { xs: 10, md: 20 },
+				marginBottom: { xs: 10 },
 				width: '100%',
 				position: { md: 'sticky' },
 				top: 30,
@@ -57,7 +57,7 @@ export default function PromptField() {
 						background: 'transparent',
 						border: 'transparent',
 						cursor: 'pointer',
-						padding: '0 20px',
+						padding: { xs: '5px 20px', md: '0 20px' },
 						borderLeft: { md: '1px solid #ccc' },
 						display: 'flex',
 						alignItems: 'center',

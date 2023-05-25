@@ -27,16 +27,23 @@ function Navbar() {
 						justifyContent: 'space-between',
 						alignItems: 'center',
 						textAlign: { xs: 'center', sm: 'left' },
+						flexDirection: { xs: 'column', sm: 'row' },
 					}}
 				>
 					<Logo
 						sx={{
-							maxWidth: 120,
+							width: 120,
 							'&:hover': { cursor: 'pointer' },
 						}}
 						isDarkMode={isDarkMode}
 					/>
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: { xs: 1, md: 2 },
+						}}
+					>
 						<Box className='toggle-switch'>
 							<input
 								type='checkbox'

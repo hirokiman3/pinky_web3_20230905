@@ -80,7 +80,6 @@ export default function PreviewModal({
 						<h5
 							style={{
 								margin: 0,
-								textAlign: 'end',
 								fontWeight: 500,
 								color: 'rgba(0,0,0,0.6)',
 							}}
