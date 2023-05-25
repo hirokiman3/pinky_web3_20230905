@@ -11,6 +11,9 @@ import Logout from '@mui/icons-material/Logout'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { signout } from '../actions/userActions'
+import CollectionsIcon from '@mui/icons-material/Collections'
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos'
+import LockScroll from './LockScroll'
 
 export default function AccountMenu() {
 	const navigate = useNavigate()
@@ -27,6 +30,7 @@ export default function AccountMenu() {
 	}
 	return (
 		<React.Fragment>
+			{open && <LockScroll />}
 			<Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
 				<Tooltip title='Account settings'>
 					<IconButton
@@ -37,7 +41,10 @@ export default function AccountMenu() {
 						aria-haspopup='true'
 						aria-expanded={open ? 'true' : undefined}
 					>
-						<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+						<Avatar
+							sx={{ width: 42, height: 42 }}
+							src='https://nftevening.com/wp-content/uploads/2022/03/1-19.png'
+						></Avatar>
 					</IconButton>
 				</Tooltip>
 			</Box>
@@ -78,11 +85,25 @@ export default function AccountMenu() {
 				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 			>
 				<MenuItem onClick={() => navigate('/user/settings')}>
-					<Avatar /> My account
+					<Avatar
+						src='https://nftevening.com/wp-content/uploads/2022/03/1-19.png'
+						alt='skelton king'
+					/>
+					My Profile
 				</MenuItem>
 				<Divider />
-				<MenuItem onClick={() => navigate('/')}>
-					<Avatar /> Generate NFTs
+				<MenuItem onClick={() => navigate('/user/nfts')}>
+					<ListItemIcon>
+						<CollectionsIcon fontSize='small' />
+					</ListItemIcon>
+					NFTs Collection
+				</MenuItem>
+				<Divider />
+				<MenuItem onClick={() => navigate('/user/nfts')}>
+					<ListItemIcon>
+						<AddToPhotosIcon fontSize='small' />
+					</ListItemIcon>
+					Generate NFTs
 				</MenuItem>
 				<Divider />
 				{/* <MenuItem onClick={handleClose}>

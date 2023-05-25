@@ -5,7 +5,11 @@ import { Outlet, createBrowserRouter } from 'react-router-dom'
 import SignUp from './pages/auth/SignUp'
 import SignIn from './pages/auth/SignIn'
 import { useSelector } from 'react-redux'
-import UserSettings from './pages/auth/UserSettings'
+import UserSettings from './pages/user/Settings'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import Error404 from './pages/errors/Error404'
+import NftGallery from './components/NftGallery'
+import GeneratedNfts from './pages/user/GeneratedNfts'
 
 // Handle React Router DOM
 export const router = createBrowserRouter([
@@ -18,7 +22,12 @@ export const router = createBrowserRouter([
 				path: 'user/settings',
 				element: <UserSettings />,
 			},
+			{
+				path: 'user/nfts',
+				element: <GeneratedNfts />,
+			},
 		],
+		errorElement: <Error404 />,
 	},
 	{
 		path: '/signup',
@@ -40,11 +49,23 @@ function App() {
 	const userSignin = useSelector(state => state.userSignin)
 	const { userInfo } = userSignin
 
+	// Custom Theme
+	const theme = createTheme({
+		palette: {
+			primary: {
+				main: '#F25672',
+			},
+		},
+	})
+
 	return (
 		// Use context for passing props
 		<Context.Provider value={{ isDarkMode, setIsDarkMode, userInfo }}>
-			<Navbar />
-			<Outlet />
+			{/* Theme Provider is used to customize MUI Library's default theme */}
+			<ThemeProvider theme={theme}>
+				<Navbar />
+				<Outlet />
+			</ThemeProvider>
 		</Context.Provider>
 	)
 }

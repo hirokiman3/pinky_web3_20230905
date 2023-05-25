@@ -1,9 +1,27 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import PromptField from './PromptField'
 import { Box, Container, Typography } from '@mui/material'
-import NftGallery from './NftGallery'
+import NftGallery from '../../components/NftGallery'
 
 export default function Prompt() {
+	// Fetch data
+	const [nftsData, setNftsData] = useState([])
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await fetch(
+					'https://raw.githubusercontent.com/edoitachi/Enver/master/nftsdata.json'
+				)
+				const data = await response.json()
+				setNftsData(data)
+			} catch (error) {
+				console.log('Error fetching data:', error)
+			}
+		}
+
+		fetchData()
+	}, [])
+
 	return (
 		<Container>
 			<Box sx={{ marginTop: 15, textAlign: 'center', marginBottom: 10 }}>
@@ -46,7 +64,7 @@ export default function Prompt() {
 				<h4 className='m-0 mb-1'>Lets imagine a cool NFT</h4>
 			</Box>
 			<PromptField />
-			<NftGallery />
+			<NftGallery nftsData={nftsData} />
 		</Container>
 	)
 }

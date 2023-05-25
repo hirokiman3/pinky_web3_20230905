@@ -2,6 +2,7 @@ import { Box, Button } from '@mui/material'
 import React, { useState } from 'react'
 import CelebrationIcon from '@mui/icons-material/Celebration'
 import LoadingModal from '../../components/LoadingModal'
+import LockScroll from '../../components/LockScroll'
 
 export default function PromptField() {
 	const [open, setOpen] = useState(false)
@@ -18,6 +19,7 @@ export default function PromptField() {
 			noValidate
 			autoComplete='off'
 		>
+			{open && <LockScroll />}
 			<Box
 				component='div'
 				sx={{

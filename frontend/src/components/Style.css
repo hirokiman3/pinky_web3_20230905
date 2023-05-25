@@ -133,3 +133,15 @@
 .toggle-input:checked + .toggle-label::before {
 	transform: translateX(27px);
 }
+
+/* Nft Gallery */
+body.dark-mode .nft-card {
+	background: rgba(255, 255, 255, 0.1) !important;
+	color: rgba(255, 255, 255, 0.8);
+}
+body.dark-mode .nft-modal {
+	color: rgba(0, 0, 0, 0.8);
+}
+body .nft-card h4 {
+	font-weight: 400 !important;
+}

@@ -13,11 +13,16 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import './Styles.css'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 
 // benny
 import { signin } from '../../actions/userActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import LoadingModal from '../../components/LoadingModal'
+import { CircularProgress } from '@mui/material'
+import Lottie from 'lottie-react'
+import LoadingAnim from '../../assets/lottie-animations/loading.json'
 
 const theme = createTheme()
 
@@ -46,9 +51,35 @@ export default function SignIn(props) {
 	return (
 		<ThemeProvider theme={theme}>
 			{loading ? (
-				<div>loging...</div>
+				<Box
+					sx={{
+						width: '100%',
+						height: '90vh',
+						overflow: 'hidden',
+						display: 'grid',
+						placeContent: 'center',
+						textAlign: 'center',
+					}}
+				>
+					<Box sx={{ maxWidth: 150, margin: 0 }}>
+						<Lottie animationData={LoadingAnim} />
+						<h4 style={{ marginTop: -30, fontWeight: 500 }}>Logging In...</h4>
+					</Box>
+				</Box>
 			) : error ? (
-				<div>error occured while signin...</div>
+				<Box
+					sx={{
+						width: '100%',
+						height: '90vh',
+						overflow: 'hidden',
+						display: 'grid',
+						placeContent: 'center',
+						textAlign: 'center',
+					}}
+				>
+					<ErrorOutlineIcon fontSize='large' sx={{ margin: '10px auto' }} />
+					Error occured while logging
+				</Box>
 			) : (
 				<Container component='main' maxWidth='xs'>
 					<CssBaseline />

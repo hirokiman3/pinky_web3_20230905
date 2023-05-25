@@ -16,14 +16,16 @@
 .img-fluid {
 	width: 100%;
 }
-
+html {
+	min-height: 100%;
+}
 body {
 	font-family: 'Poppins', sans-serif;
 	transition: 300ms;
 	overflow-x: hidden;
 	position: relative;
-	min-height: 100vh;
-	height: 100%;
+	min-height: 100%;
+	background-attachment: fixed;
 }
 
 /* Darkmode styling */
@@ -32,6 +34,9 @@ body.dark-mode {
 		no-repeat;
 	background-size: cover;
 	color: #fff;
+}
+body.dark-mode .sub-description {
+	color: rgba(255, 255, 255, 0.8);
 }
 
 body.bright-mode {
@@ -66,4 +71,13 @@ button {
 }
 .scrollbar-variant-1 ::-webkit-scrollbar-thumb:hover {
 	background-color: #555;
+}
+
+/* Errors page */
+.dark-mode .errors-page a {
+	color: rgba(255, 255, 255, 0.7);
+	transition: 200ms;
+}
+.dark-mode .errors-page a:hover {
+	color: rgba(255, 255, 255, 0.8);
 }
