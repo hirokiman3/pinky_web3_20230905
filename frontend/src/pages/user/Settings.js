@@ -3,6 +3,7 @@ import { useContext, useState } from 'react'
 import { Context } from '../../App'
 
 export default function UserSettings() {
+
 	// Importing userInfo through useContext
 	const { userInfo } = useContext(Context)
 

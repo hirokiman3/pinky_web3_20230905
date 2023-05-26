@@ -28,6 +28,8 @@ userRouter.post(
           name: user.name,
           username: user.username,
           email: user.email,
+          secret: user.secret,
+          org_id: user.org_id,
           token: generateToken(user),
         })
         return
