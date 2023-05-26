@@ -14,7 +14,7 @@ export default function GeneratedNfts() {
 				const data = await response.json()
 				setNftsData(data)
 			} catch (error) {
-				console.log('Error fetching data:', error)
+				console.error('Error fetching data:', error)
 			}
 		}
 

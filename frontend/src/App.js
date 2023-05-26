@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Prompt from './pages/prompt/Prompt'
 import { Outlet, createBrowserRouter } from 'react-router-dom'
@@ -9,6 +9,7 @@ import UserSettings from './pages/user/Settings'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Error404 from './pages/errors/Error404'
 import GeneratedNfts from './pages/user/GeneratedNfts'
+import { Fade } from '@mui/material'
 
 // Handle React Router DOM
 export const router = createBrowserRouter([
@@ -42,7 +43,20 @@ export const router = createBrowserRouter([
 export const Context = createContext()
 
 function App() {
-	const [isDarkMode, setIsDarkMode] = useState(true)
+	const [isDarkMode, setIsDarkMode] = useState(() => {
+		const storedTheme = localStorage.getItem('theme')
+		return storedTheme ? JSON.parse(storedTheme) : true
+	})
+
+	useEffect(() => {
+		const body = document.querySelector('body')
+		if (isDarkMode) {
+			body.classList.add('dark-mode')
+		} else {
+			body.classList.remove('dark-mode')
+		}
+		localStorage.setItem('theme', JSON.stringify(isDarkMode))
+	}, [isDarkMode])
 
 	// Handle Authentication
 	const userSignin = useSelector(state => state.userSignin)
