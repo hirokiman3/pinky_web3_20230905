@@ -7,16 +7,16 @@ import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
-import { Provider } from "react-redux"
-import store from "./store"
-import * as serviceWorker from "./serviceWorker"
+import { Provider } from 'react-redux'
+import store from './store'
+import * as serviceWorker from './serviceWorker'
 
-const root = ReactDOM.createRoot(document.getElementById("root"))
+const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>
-  </Provider>
+	<Provider store={store}>
+		<React.StrictMode>
+			<RouterProvider router={router} />
+		</React.StrictMode>
+	</Provider>
 )
 serviceWorker.unregister()
