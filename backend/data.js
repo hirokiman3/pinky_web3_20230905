@@ -11,17 +11,6 @@ const data = {
       org_id: "org-rAHjkgyanTgKHlDkwoE7RgZm",
     },
   ],
-  gallery: [
-    {
-      prompt: "create anime cat wearing google glasses.",
-      path: "/gallery/1684918996366.png",
-      user: {
-        name: "Arsalan Ali",
-        username: "aliarsalandev",
-        email: "itsaliarsalan@gmail.com",
-      },
-    },
-  ],
 }
 
 export default data

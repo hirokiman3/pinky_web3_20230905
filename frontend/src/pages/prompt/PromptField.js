@@ -1,23 +1,26 @@
-import { Box, Button } from '@mui/material'
-import React, { useState } from 'react'
-import CelebrationIcon from '@mui/icons-material/Celebration'
-import LoadingModal from '../../components/LoadingModal'
-import LockScroll from '../../components/LockScroll'
+import React, { useEffect, useState } from "react"
+import CelebrationIcon from "@mui/icons-material/Celebration"
+import LoadingModal from "../../components/LoadingModal"
+import LockScroll from "../../components/LockScroll"
+import { Box, Button } from "@mui/material"
+import PreviewModal from "./PreviewModal"
+import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { generate } from "../../actions/nftActions"
 
-// Benny here
-import {useSelector} from 'react-redux'
-import { genNFT,convertBlobToPng } from '../../genNFT'
-import PreviewModal from './PreviewModal'
-import fs from 'fs'
 export default function PromptField() {
-
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
+  const nftGenerate = useSelector((state) => state.nftGenerate)
+  const { newlyGeneratedNFT, loading, error } = nftGenerate
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState("")
   const [previewOpen, setPreviewOpen] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [isImageFromPrompt, setIsImageFromPrompt] = useState(false)
   const [activeImage, setActiveImage] = useState({
     id: "",
     src: "",
@@ -26,30 +29,52 @@ export default function PromptField() {
     date: "",
   })
 
+  const no = 1
+  const dimensions = "256x256"
+
   const handleGenerate = async () => {
-    setOpen(true)
-    try {
-      const url = await genNFT(userInfo, prompt, 1, "256x256")
-
-      setActiveImage({
-        src: url,
-        prompt: prompt,
-        date: Date.now(),
-        user: userInfo.username,
-      })
-
-      setOpen(false)
-      setPreviewOpen(true)
-    } catch (error) {
-      setPreviewOpen(false)
-      console.log(error)
+    if (userInfo) {
+      setOpen(true)
+      dispatch(
+        generate(
+          userInfo.org_id,
+          userInfo.secret,
+          prompt,
+          no,
+          dimensions,
+          userInfo.username
+        )
+      )
+    } else {
+      navigate("/signin")
     }
   }
 
   const handlePreviewClose = () => {
     setImageLoaded(false)
     setPreviewOpen(false)
+    setIsImageFromPrompt(false)
   }
+
+  useEffect(() => {
+    if (newlyGeneratedNFT) {
+      console.log(
+        newlyGeneratedNFT.path.success,
+        newlyGeneratedNFT.path.pinataURL
+      )
+
+      setActiveImage({
+        src: newlyGeneratedNFT.path.pinataURL,
+        prompt: prompt,
+        date: newlyGeneratedNFT.date,
+        user: userInfo.username,
+      })
+
+      setOpen(false)
+      setIsImageFromPrompt(true)
+      setPreviewOpen(true)
+    }
+  }, [newlyGeneratedNFT])
   return (
     <Box
       component='form'
@@ -120,6 +145,7 @@ export default function PromptField() {
         handlePreviewClose={handlePreviewClose}
         activeImage={activeImage}
         imageLoaded={imageLoaded}
+        isImageFromPrompt={isImageFromPrompt}
         setImageLoaded={setImageLoaded}
       />
     </Box>
