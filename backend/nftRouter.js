@@ -1,14 +1,14 @@
-import express from "express"
-import { Configuration, OpenAIApi } from "openai"
-import fetch from "node-fetch"
-import { uploadFileToIPFS } from "./utils.js"
-import { writeFileSync, createReadStream } from "fs"
 import path from "path"
+import fetch from "node-fetch"
+import express from "express"
+import { uploadFileToIPFS } from "./utils.js"
+import { Configuration, OpenAIApi } from "openai"
+import { writeFileSync, createReadStream } from "fs"
+
 const nftRouter = express.Router()
 
 nftRouter.post("/generate", async (req, res) => {
   try {
-    // OpenAI Config and Connection
     const org_id = req.body.org_id
     const secret = req.body.secret
     const prompt = req.body.prompt
@@ -47,7 +47,7 @@ nftRouter.post("/generate", async (req, res) => {
       date: date,
     })
   } catch (error) {
-    console.log(error.message)
+    console.log("error while sending nfts to ipfs", error.message)
   }
 })
 
