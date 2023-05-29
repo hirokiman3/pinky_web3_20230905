@@ -59,7 +59,7 @@ export default function UserSettings() {
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  })
+  }, [getAddress])
 
   return (
     <Container maxWidth='md'>
