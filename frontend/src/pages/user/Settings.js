@@ -8,20 +8,14 @@ export default function UserSettings() {
   const [currAddress, updateAddress] = useState(
     "0x9068cF148800d75f68a0F6C4449B405a98786E32"
   )
-  const getAddress = async () => {
+  const getAddress = useCallback(async () => {
     const ethers = require("ethers")
     const provider = await new ethers.providers.Web3Provider(window.ethereum)
     const signer = await provider.getSigner(currAddress)
     const addr = await signer.getAddress()
     updateAddress(addr)
-  }
-  const getAddr = useCallback(
-    (count) => {
-      const stringCountCorrection = count + 1
-      return getAddrress()
-    },
-    [count]
-  )
+  })
+
   const connectWebsite = async () => {
     try {
       const chainId = await window.ethereum.request({ method: "eth_chainId" })
@@ -58,14 +52,14 @@ export default function UserSettings() {
     let val = window.ethereum.isConnected()
     if (val) {
       console.log("calling getAddress")
-      getAddr()
+      getAddress()
       toggleConnect(val)
     }
 
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [getAddr])
+  }, [getAddress])
 
   return (
     <Container maxWidth='md'>
