@@ -57,24 +57,26 @@ export default function PromptField() {
   }
 
   useEffect(() => {
-    if (newlyGeneratedNFT) {
-      console.log(
-        newlyGeneratedNFT.path.success,
-        newlyGeneratedNFT.path.pinataURL
-      )
+    if (userInfo) {
+      if (newlyGeneratedNFT) {
+        console.log(
+          newlyGeneratedNFT.path.success,
+          newlyGeneratedNFT.path.pinataURL
+        )
 
-      setActiveImage({
-        src: newlyGeneratedNFT.path.pinataURL,
-        prompt: prompt,
-        date: newlyGeneratedNFT.date,
-        user: userInfo.username,
-      })
+        setActiveImage({
+          src: newlyGeneratedNFT.path.pinataURL,
+          prompt: prompt,
+          date: newlyGeneratedNFT.date,
+          user: userInfo.username,
+        })
 
-      setOpen(false)
-      setIsImageFromPrompt(true)
-      setPreviewOpen(true)
+        setOpen(false)
+        setIsImageFromPrompt(true)
+        setPreviewOpen(true)
+      }
     }
-  }, [newlyGeneratedNFT, userInfo.username, prompt])
+  }, [userInfo, newlyGeneratedNFT, prompt])
   return (
     <Box
       component='form'
