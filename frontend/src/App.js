@@ -9,7 +9,7 @@ import UserSettings from './pages/user/Settings'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Error404 from './pages/errors/Error404'
 import GeneratedNfts from './pages/user/GeneratedNfts'
-import { Fade } from '@mui/material'
+
 
 // Handle React Router DOM
 export const router = createBrowserRouter([

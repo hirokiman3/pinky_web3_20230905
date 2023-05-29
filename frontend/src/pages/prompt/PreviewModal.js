@@ -2,7 +2,7 @@ import { Box, Modal, Skeleton } from "@mui/material"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import Marketplace from "../../Marketplace.json"
-import { uploadFileToIPFS, uploadJSONToIPFS } from "../../pinata"
+import { uploadJSONToIPFS } from "../../pinata"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 

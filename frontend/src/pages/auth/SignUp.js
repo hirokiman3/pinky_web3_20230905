@@ -2,9 +2,7 @@ import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-// import FormControlLabel from '@mui/material/FormControlLabel'
-// import Checkbox from '@mui/material/Checkbox'
+import TextField from "@mui/material/TextField"
 import { Link, useNavigate } from "react-router-dom"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
@@ -47,7 +45,7 @@ export default function SignUp(props) {
   const [confirmPassword, setConfirmPassword] = React.useState("")
 
   const userRegister = useSelector((state) => state.userRegister)
-  const { userInfo, loading, error } = userRegister
+  const { userInfo } = userRegister
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleSubmit = (event) => {
@@ -63,7 +61,7 @@ export default function SignUp(props) {
     if (userInfo) {
       navigate("/")
     }
-  }, [userInfo])
+  }, [userInfo, navigate])
 
   return (
     <ThemeProvider theme={theme}>
