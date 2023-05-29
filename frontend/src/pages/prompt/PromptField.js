@@ -12,7 +12,7 @@ export default function PromptField() {
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
   const nftGenerate = useSelector((state) => state.nftGenerate)
-  const { newlyGeneratedNFT, loading, error } = nftGenerate
+  const { newlyGeneratedNFT } = nftGenerate
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -74,7 +74,7 @@ export default function PromptField() {
       setIsImageFromPrompt(true)
       setPreviewOpen(true)
     }
-  }, [newlyGeneratedNFT])
+  }, [newlyGeneratedNFT, userInfo.username, prompt])
   return (
     <Box
       component='form'

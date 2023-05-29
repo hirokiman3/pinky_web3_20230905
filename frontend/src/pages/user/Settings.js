@@ -1,7 +1,6 @@
 import { Context } from "../../App"
 import { useState, useEffect, useContext } from "react"
 import { Box, Button, Container, Stack, TextField } from "@mui/material"
-import { useNavigate } from "react-router-dom"
 
 export default function UserSettings() {
   //   Wallet
@@ -9,8 +8,6 @@ export default function UserSettings() {
   const [currAddress, updateAddress] = useState(
     "0x9068cF148800d75f68a0F6C4449B405a98786E32"
   )
-  const navigate = useNavigate()
-
   const getAddress = async () => {
     const ethers = require("ethers")
     const provider = await new ethers.providers.Web3Provider(window.ethereum)
@@ -51,7 +48,7 @@ export default function UserSettings() {
   const [organizationId, setOrganizationId] = useState(userInfo.org_id)
 
   useEffect(() => {
-    if (window.ethereum == undefined) return
+    if (window.ethereum === undefined) return
     let val = window.ethereum.isConnected()
     if (val) {
       console.log("calling getAddress")
@@ -62,7 +59,7 @@ export default function UserSettings() {
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [currAddress])
+  }, [currAddress, getAddress])
 
   return (
     <Container maxWidth='md'>

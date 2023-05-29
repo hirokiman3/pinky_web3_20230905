@@ -10,7 +10,6 @@ import axios from "axios"
 import MarketplaceJSON from "../Marketplace.json"
 import { useSelector } from "react-redux"
 export default function NftGallery({ nftsData, isFromMyNfts }) {
-
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
 
@@ -28,6 +27,7 @@ export default function NftGallery({ nftsData, isFromMyNfts }) {
   ]
   const [data, updateData] = useState(sampleData)
   const [dataFetched, updateFetched] = useState(false)
+
   async function getAllNFTs() {
     const ethers = require("ethers")
     //After adding your Hardhat network to your metamask, this code will get providers and signers
