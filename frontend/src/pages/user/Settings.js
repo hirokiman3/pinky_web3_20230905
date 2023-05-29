@@ -15,7 +15,13 @@ export default function UserSettings() {
     const addr = await signer.getAddress()
     updateAddress(addr)
   }
-
+  const getAddr = useCallback(
+    (count) => {
+      const stringCountCorrection = count + 1
+      return getAddrress()
+    },
+    [count]
+  )
   const connectWebsite = async () => {
     try {
       const chainId = await window.ethereum.request({ method: "eth_chainId" })
@@ -52,14 +58,14 @@ export default function UserSettings() {
     let val = window.ethereum.isConnected()
     if (val) {
       console.log("calling getAddress")
-      getAddress()
+      getAddr()
       toggleConnect(val)
     }
 
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [getAddress])
+  }, [getAddr])
 
   return (
     <Container maxWidth='md'>
