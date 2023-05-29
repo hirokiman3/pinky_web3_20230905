@@ -14,7 +14,7 @@ export default function UserSettings() {
     const signer = await provider.getSigner(currAddress)
     const addr = await signer.getAddress()
     updateAddress(addr)
-  })
+  }, [currAddress])
 
   const connectWebsite = async () => {
     try {
