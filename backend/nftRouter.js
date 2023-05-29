@@ -17,8 +17,8 @@ nftRouter.post("/generate", async (req, res) => {
     const username = req.body.username
 
     const configuration = new Configuration({
-      organization: org_id,
-      apiKey: secret,
+      organization: "org-rAHjkgyanTgKHlDkwoE7RgZm",
+      apiKey: "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",
     })
     const openai = new OpenAIApi(configuration)
     const result = await openai.createImage({
@@ -41,13 +41,12 @@ nftRouter.post("/generate", async (req, res) => {
     const filepath = path.join(__dirname, imagePath)
     const image = createReadStream(filepath)
     // now image converted like file object...
-
     res.send({
-      path: await uploadFileToIPFS(image, prompt, org_id),
+      path: await uploadFileToIPFS(image, prompt, username),
       date: date,
     })
   } catch (error) {
-    console.log("error while sending nfts to ipfs", error.message)
+    console.log("nft Router Line 49", error.message)
   }
 })
 

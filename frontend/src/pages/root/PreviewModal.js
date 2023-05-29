@@ -44,6 +44,7 @@ export default function PreviewModal({
       const response = await uploadJSONToIPFS(nftJSON)
       if (response.success === true) {
         console.log("Uploaded JSON to Pinata: ", response)
+
         return response.pinataURL
       }
     } catch (e) {
@@ -84,6 +85,7 @@ export default function PreviewModal({
       await transaction.wait()
 
       alert("Successfully listed your NFT!")
+      localStorage.removeItem("newlyGeneratedNFT")
       updateFormParams({ name: "", description: "", price: "" })
       navigate("/user/nfts")
     } catch (e) {

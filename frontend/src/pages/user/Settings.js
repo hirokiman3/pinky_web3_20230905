@@ -1,20 +1,20 @@
 import { Context } from "../../App"
 import { useState, useEffect, useContext, useCallback } from "react"
 import { Box, Button, Container, Stack, TextField } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 export default function UserSettings() {
+  const navigate = useNavigate()
   //   Wallet
   const [connected, toggleConnect] = useState(false)
-  const [currAddress, updateAddress] = useState(
-    "0x9068cF148800d75f68a0F6C4449B405a98786E32"
-  )
+  const [currAddress, updateAddress] = useState("")
   const getAddress = useCallback(async () => {
     const ethers = require("ethers")
     const provider = await new ethers.providers.Web3Provider(window.ethereum)
-    const signer = await provider.getSigner(currAddress)
-    const addr = await signer.getAddress()
+    const signer = await provider.getSigner()
+    const addr = await signer.getAddress("")
     updateAddress(addr)
-  }, [currAddress])
+  }, [])
 
   const connectWebsite = async () => {
     try {
@@ -29,11 +29,11 @@ export default function UserSettings() {
       await window.ethereum
         .request({ method: "eth_requestAccounts" })
         .then(() => {
-          console.log("Getting Wallet Address.....")
           getAddress()
         })
     } catch (error) {
       console.log("Error occured while connecting wallet: ", error.message)
+      navigate("/")
     }
   }
 
@@ -51,7 +51,6 @@ export default function UserSettings() {
     if (window.ethereum === undefined) return
     let val = window.ethereum.isConnected()
     if (val) {
-      console.log("calling getAddress")
       getAddress()
       toggleConnect(val)
     }
@@ -59,7 +58,7 @@ export default function UserSettings() {
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [getAddress])
+  }, [getAddress, currAddress])
 
   return (
     <Container maxWidth='md'>
@@ -166,19 +165,19 @@ export default function UserSettings() {
                   {connected ? "Connected" : "Connect Wallet"}
                 </Button>
                 <br></br>
-                {/* <h6
+                <h6
                   style={{
                     color: "black",
                     marginTop: 12,
                   }}
                 >
-                  {currAddress !== "0x9068cF148800d75f68a0F6C4449B405a98786E32"
+                  {currAddress !== ""
                     ? "Connected to"
                     : "Not Connected. Please login to view NFTs"}{" "}
-                  {currAddress !== "0x9068cF148800d75f68a0F6C4449B405a98786E32"
+                  {currAddress !== ""
                     ? currAddress.substring(0, 15) + "..."
                     : ""}{" "}
-                </h6> */}
+                </h6>
               </Box>
             </Stack>
 
