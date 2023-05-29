@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { createContext, useState, useEffect } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
-import Root from './pages/prompt/Root'
+import Root from './pages/root/Root'
 import UserSettings from './pages/user/Settings'
 import GeneratedNfts from './pages/user/GeneratedNfts'
 import SignUp from './pages/auth/SignUp'
