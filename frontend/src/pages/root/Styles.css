@@ -1,0 +1,20 @@
+/* Call To Action */
+.cta {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #5662f6;
+	border: transparent;
+	padding: 10px 20px;
+	font-family: 'Poppins';
+	font-size: 18px;
+	color: #fff;
+	font-weight: 500;
+	border-radius: 20px;
+	cursor: pointer;
+	transition: 300ms;
+	margin: 0 auto;
+}
+.cta:hover {
+	background-color: #353dad;
+}
