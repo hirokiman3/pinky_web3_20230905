@@ -1,24 +1,24 @@
 import path from "path"
-import fetch from "node-fetch"
 import express from "express"
+import dotenv from "dotenv"
+import fetch from "node-fetch"
 import { uploadFileToIPFS } from "./utils.js"
 import { Configuration, OpenAIApi } from "openai"
 import { writeFileSync, createReadStream } from "fs"
 
+dotenv.config()
 const nftRouter = express.Router()
 
 nftRouter.post("/generate", async (req, res) => {
   try {
-    const org_id = req.body.org_id
-    const secret = req.body.secret
     const prompt = req.body.prompt
     const no = req.body.no
     const dimensions = req.body.dimensions
     const username = req.body.username
 
     const configuration = new Configuration({
-      organization: "org-rAHjkgyanTgKHlDkwoE7RgZm",
-      apiKey: "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",
+      organization: process.env.OPENAI_ORG_ID,
+      apiKey: process.env.OPENAI_API_KEY,
     })
     const openai = new OpenAIApi(configuration)
     const result = await openai.createImage({
