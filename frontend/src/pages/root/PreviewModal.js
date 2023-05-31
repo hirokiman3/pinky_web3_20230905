@@ -21,7 +21,6 @@ export default function PreviewModal({
     description: activeImage.prompt,
     price: "",
   })
-  const ethers = require("ethers")
 
   //This function uploads the metadata to IPFS
   async function uploadMetadataToIPFS() {
@@ -58,10 +57,12 @@ export default function PreviewModal({
     //Upload data to IPFS
     try {
       const metadataURL = await uploadMetadataToIPFS()
+      const ethers = require("ethers")
       if (metadataURL === -1) return
       //After adding your Hardhat network to your metamask, this code will get providers and signers
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner()
+      const provider = await new ethers.providers.Web3Provider(window.ethereum)
+      const signer = await provider.getSigner()
+
       console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
 
       //Pull the deployed contract instance
