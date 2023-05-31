@@ -61,9 +61,7 @@ export default function PreviewModal({
       if (metadataURL === -1) return
       //After adding your Hardhat network to your metamask, this code will get providers and signers
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      const signer = provider.getSigner(
-        "0x9068cF148800d75f68a0F6C4449B405a98786E32"
-      )
+      const signer = provider.getSigner("")
       console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
 
       //Pull the deployed contract instance
