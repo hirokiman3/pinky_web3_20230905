@@ -8,11 +8,12 @@ export default function UserSettings() {
   //   Wallet
   const [connected, toggleConnect] = useState(false)
   const [currAddress, updateAddress] = useState("")
+
   const getAddress = useCallback(async () => {
     const ethers = require("ethers")
     const provider = await new ethers.providers.Web3Provider(window.ethereum)
     const signer = await provider.getSigner()
-    const addr = await signer.getAddress("")
+    const addr = await signer.getAddress()
     updateAddress(addr)
   }, [])
 
