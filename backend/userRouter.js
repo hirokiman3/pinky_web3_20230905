@@ -62,5 +62,31 @@ userRouter.post(
     })
   })
 )
+userRouter.put(
+  "/profile",
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.secret = req.body.secret || user.secret
+      user.org_id = req.body.org_id || user.org_id
+
+      if (req.body.password) {
+        user.password = bcrypt.hashSync(req.body.password, 8)
+      }
+
+      const updatedUser = await user.save()
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        secret: updatedUser.secret,
+        org_id: updatedUser.org_id,
+        token: generateToken(updatedUser),
+      })
+    }
+  })
+)
 
 export default userRouter

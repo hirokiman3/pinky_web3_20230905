@@ -54,7 +54,6 @@ export default function PromptField() {
           newlyGeneratedNFT.path.success,
           newlyGeneratedNFT.path.pinataURL
         )
-
         setActiveImage({
           src: newlyGeneratedNFT.path.pinataURL,
           prompt: prompt,

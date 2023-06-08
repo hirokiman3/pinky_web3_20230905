@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import ImageList from '@mui/material/ImageList'
-import ImageListItem from '@mui/material/ImageListItem'
-import { useTheme, useMediaQuery, Box } from '@mui/material'
-import './Style.css'
-import PreviewModal from '../pages/root/PreviewModal'
-import LockScroll from './LockScroll'
-import { GetIpfsUrlFromPinata } from '../utils'
-import axios from 'axios'
-import MarketplaceJSON from '../Marketplace.json'
-import { useSelector } from 'react-redux'
+import { useState } from "react"
+import ImageList from "@mui/material/ImageList"
+import ImageListItem from "@mui/material/ImageListItem"
+import { useTheme, useMediaQuery, Box } from "@mui/material"
+import "./Style.css"
+import PreviewModal from "../pages/root/PreviewModal"
+import LockScroll from "./LockScroll"
+import { GetIpfsUrlFromPinata } from "../utils"
+import axios from "axios"
+import MarketplaceJSON from "../Marketplace.json"
+import { useSelector } from "react-redux"
 
 export default function NftGallery({ nftsData, isFromMyNfts }) {
   const userSignin = useSelector((state) => state.userSignin)
@@ -47,7 +47,9 @@ export default function NftGallery({ nftsData, isFromMyNfts }) {
     const items = await Promise.all(
       transaction.map(async (i) => {
         var tokenURI = await contract.tokenURI(i.tokenId)
-        console.log("getting this tokenUri", tokenURI)
+
+        // console.log("getting this tokenUri", tokenURI)
+
         tokenURI = GetIpfsUrlFromPinata(tokenURI)
         let meta = await axios.get(tokenURI)
         meta = meta.data
@@ -102,6 +104,7 @@ export default function NftGallery({ nftsData, isFromMyNfts }) {
   // Modal functions
   const handlePreview = (e, key) => {
     // Find the clicked item using the key
+
     const clickedItem = nftsData.find((item) => item.id === key)
 
     // Check if the clicked item exists

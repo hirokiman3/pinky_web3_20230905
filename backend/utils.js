@@ -60,7 +60,7 @@ export const uploadFileToIPFS = async (file, name, username) => {
   const metadata = JSON.stringify({
     name: name,
     keyvalues: {
-      exampleKey: username,
+      username: username,
     },
   })
   data.append("pinataMetadata", metadata)

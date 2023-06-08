@@ -15,6 +15,7 @@ export default function PreviewModal({
   imageLoaded,
 }) {
   const navigate = useNavigate()
+  const ethers = require("ethers")
 
   const [formParams, updateFormParams] = useState({
     name: "",
@@ -23,7 +24,7 @@ export default function PreviewModal({
   })
 
   //This function uploads the metadata to IPFS
-  async function uploadMetadataToIPFS() {
+  const uploadMetadataToIPFS = async () => {
     const { name, description, price } = formParams
     //Make sure that none of the fields are empty
     if (!name || !description || !price || !activeImage.src) {
@@ -36,6 +37,7 @@ export default function PreviewModal({
       description,
       price,
       image: activeImage.src,
+      timestamp: Date.now(),
     }
 
     try {
@@ -51,13 +53,12 @@ export default function PreviewModal({
     }
   }
 
-  async function listNFT(e) {
+  const listNFT = async (e) => {
     e.preventDefault()
 
     //Upload data to IPFS
     try {
       const metadataURL = await uploadMetadataToIPFS()
-      const ethers = require("ethers")
       if (metadataURL === -1) return
       //After adding your Hardhat network to your metamask, this code will get providers and signers
       const provider = await new ethers.providers.Web3Provider(window.ethereum)

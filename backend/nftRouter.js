@@ -15,11 +15,14 @@ nftRouter.post("/generate", async (req, res) => {
     const no = req.body.no
     const dimensions = req.body.dimensions
     const username = req.body.username
+    const org_id = req.body.org_id
+    const secret = req.body.secret
 
     const configuration = new Configuration({
-      organization: process.env.OPENAI_ORG_ID,
-      apiKey: process.env.OPENAI_API_KEY,
+      organization: org_id || process.env.OPENAI_ORG_ID,
+      apiKey: secret || process.env.OPENAI_API_KEY,
     })
+
     const openai = new OpenAIApi(configuration)
     const result = await openai.createImage({
       prompt,
@@ -49,5 +52,6 @@ nftRouter.post("/generate", async (req, res) => {
     console.log("nft Router Line 49", error.message)
   }
 })
+
 
 export default nftRouter
