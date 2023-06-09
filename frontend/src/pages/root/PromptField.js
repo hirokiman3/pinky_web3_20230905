@@ -11,15 +11,19 @@ import { generate } from "../../actions/nftActions"
 export default function PromptField() {
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
+
   const nftGenerate = useSelector((state) => state.nftGenerate)
   const { newlyGeneratedNFT } = nftGenerate
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState("")
+
   const [previewOpen, setPreviewOpen] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+
   const [isImageFromPrompt, setIsImageFromPrompt] = useState(false)
   const [activeImage, setActiveImage] = useState({
     id: "",
@@ -35,7 +39,16 @@ export default function PromptField() {
   const handleGenerate = async () => {
     if (userInfo) {
       setOpen(true)
-      dispatch(generate(prompt, no, dimensions, userInfo.username))
+      dispatch(
+        generate(
+          prompt,
+          no,
+          dimensions,
+          userInfo.username,
+          userInfo.org_id,
+          userInfo.secret
+        )
+      )
     } else {
       navigate("/signin")
     }
@@ -67,6 +80,7 @@ export default function PromptField() {
       }
     }
   }, [userInfo, newlyGeneratedNFT, prompt])
+
   return (
     <Box
       component='form'

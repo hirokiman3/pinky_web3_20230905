@@ -85,7 +85,10 @@ export default function PreviewModal({
       await transaction.wait()
 
       alert("Successfully listed your NFT!")
+
       localStorage.removeItem("newlyGeneratedNFT")
+      activeImage = []
+      previewOpen = false
       updateFormParams({ name: "", description: "", price: "" })
       navigate("/user/nfts")
     } catch (e) {

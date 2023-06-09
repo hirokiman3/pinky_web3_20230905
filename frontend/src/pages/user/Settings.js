@@ -2,6 +2,7 @@ import { Context } from "../../App"
 import { useState, useEffect, useContext, useCallback } from "react"
 import { Box, Button, Container, Stack, TextField } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { connect } from "mongoose"
 
 export default function UserSettings() {
   const navigate = useNavigate()
@@ -9,13 +10,25 @@ export default function UserSettings() {
   const [connected, toggleConnect] = useState(false)
   const [currAddress, updateAddress] = useState("")
 
+  // Importing userInfo through useContext
+  const { userInfo } = useContext(Context)
+
+  // State Variables
+  const [fullName, setFullName] = useState(userInfo.name)
+  const [email, setEmail] = useState(userInfo.email)
+  const [username, setUsername] = useState(userInfo.username)
+  const [password, setPassword] = useState(userInfo.username)
+  const [confirmPassword, setConfirmPassword] = useState(userInfo.username)
+  const [openAiSecret, setOpenAiSecret] = useState(userInfo.secret)
+  const [organizationId, setOrganizationId] = useState(userInfo.org_id)
+
   const getAddress = useCallback(async () => {
     const ethers = require("ethers")
     const provider = await new ethers.providers.Web3Provider(window.ethereum)
     const signer = await provider.getSigner()
     const addr = await signer.getAddress()
     updateAddress(addr)
-  }, [])
+  }, [updateAddress])
 
   const connectWebsite = async () => {
     try {
@@ -38,24 +51,14 @@ export default function UserSettings() {
     }
   }
 
-  // Importing userInfo through useContext
-  const { userInfo } = useContext(Context)
-
-  // State Variables
-  const [fullName, setFullName] = useState(userInfo.name)
-  const [email, setEmail] = useState(userInfo.email)
-  const [username, setUsername] = useState(userInfo.username)
-  const [openAiSecret, setOpenAiSecret] = useState(userInfo.secret)
-  const [organizationId, setOrganizationId] = useState(userInfo.org_id)
-
   useEffect(() => {
     if (window.ethereum === undefined) return
+
     let val = window.ethereum.isConnected()
     if (val) {
       getAddress()
       toggleConnect(val)
     }
-
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
@@ -115,6 +118,32 @@ export default function UserSettings() {
                   }}
                 />
               </Stack>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={{ xs: 2, sm: 1 }}
+              >
+                <TextField
+                  fullWidth
+                  required
+                  label='Password'
+                  type='password'
+                  value={password}
+                  onChange={(event) => {
+                    setPassword(event.target.value)
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  required
+                  type='password'
+                  label='Confirm Password'
+                  value={confirmPassword}
+                  onChange={(event) => {
+                    setConfirmPassword(event.target.value)
+                  }}
+                />
+              </Stack>
+
               <h5
                 style={{
                   margin: 0,
@@ -149,6 +178,7 @@ export default function UserSettings() {
                   }}
                 />
               </Stack>
+
               <hr></hr>
 
               <h5

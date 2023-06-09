@@ -101,7 +101,7 @@ export default function AccountMenu() {
           <ListItemIcon>
             <CollectionsIcon fontSize='small' />
           </ListItemIcon>
-          NFTs Collection
+          Your NFTs
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => navigate("/")}>

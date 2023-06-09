@@ -5,7 +5,12 @@ import {
   combineReducers,
 } from "redux"
 import thunk from "redux-thunk"
-import { userRegisterReducer, userSigninReducer } from "./reducers/userReducers"
+import {
+  userDetailsReducer,
+  userRegisterReducer,
+  userSigninReducer,
+  userUpdateProfileReducer,
+} from "./reducers/userReducers"
 import { nftGenerateReducer } from "./reducers/nftReducers"
 const initialState = {
   userSignin: {
@@ -20,7 +25,9 @@ const initialState = {
 }
 const reducer = combineReducers({
   userSignin: userSigninReducer,
+  userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
+  userUpdateProfile: userUpdateProfileReducer,
   nftGenerate: nftGenerateReducer,
 })
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
