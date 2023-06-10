@@ -1,4 +1,3 @@
-import Marketplace from "../Marketplace"
 import PromptField from "./PromptField"
 import { Box, Container, Fade, Typography } from "@mui/material"
 
@@ -48,7 +47,6 @@ export default function Prompt() {
           <h4 className='m-0 mb-1'>Lets imagine a cool NFT</h4>
         </Box>
         <PromptField />
-        <Marketplace />
       </Container>
     </Fade>
   )

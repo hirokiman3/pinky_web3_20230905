@@ -1,23 +1,23 @@
-import React from "react"
 import axios from "axios"
 import { useState } from "react"
+import { Context } from "../../App"
 import Grid from "@mui/material/Grid"
-import Card from "../components/Card"
+import Card from "../../components/Card"
+import React, { useContext } from "react"
 import { Box, Container } from "@mui/material"
-import { GetIpfsUrlFromPinata } from "../utils"
-import MarketplaceJSON from "../Marketplace.json"
+import { GetIpfsUrlFromPinata } from "../../utils"
+import MarketplaceJSON from "../../Marketplace.json"
 
 function Marketplace() {
   const [data, updateData] = useState([])
   const [dataFetched, updateFetched] = useState(false)
+  const { isWalletConnected } = useContext(Context)
 
   const getAllNFTs = async () => {
     const ethers = require("ethers")
     //After adding your Hardhat network to your metamask, this code will get providers and signers
     const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner(
-      "0xc110fa91fc16ca2147dfcb5e209fec8efe424ea4"
-    )
+    const signer = provider.getSigner()
     //Pull the deployed contract instance
     let contract = new ethers.Contract(
       MarketplaceJSON.address,
@@ -56,7 +56,7 @@ function Marketplace() {
     updateData(items)
   }
 
-  if (!dataFetched) getAllNFTs()
+  if (!dataFetched && isWalletConnected) getAllNFTs()
 
   return (
     <Container>
@@ -69,11 +69,15 @@ function Marketplace() {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {data.map((item, index) => (
-            <Grid item xs={12} sm={4} md={3} key={index}>
-              <Card data={item} />
-            </Grid>
-          ))}
+          {isWalletConnected ? (
+            data.map((item, index) => (
+              <Grid item xs={12} sm={4} md={3} key={index}>
+                <Card data={item} />
+              </Grid>
+            ))
+          ) : (
+            <span>Connect Your Wallet to explore marketplace.</span>
+          )}
         </Grid>
       </Box>
     </Container>

@@ -97,19 +97,25 @@ export default function AccountMenu() {
           My Profile
         </MenuItem>
         <Divider />
+        <MenuItem onClick={() => navigate("/")}>
+          <ListItemIcon>
+            <AddToPhotosIcon fontSize='small' />
+          </ListItemIcon>
+          Prompt
+        </MenuItem>
         <MenuItem onClick={() => navigate("/user/nfts")}>
           <ListItemIcon>
             <CollectionsIcon fontSize='small' />
           </ListItemIcon>
           Your NFTs
         </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => navigate("/")}>
+        <MenuItem onClick={() => navigate("/user/marketplace")}>
           <ListItemIcon>
-            <AddToPhotosIcon fontSize='small' />
+            <CollectionsIcon fontSize='small' />
           </ListItemIcon>
-          Generate NFTs
+          Marketplace
         </MenuItem>
+        <Divider />
         <Divider />
         {/* <MenuItem onClick={handleClose}>
           <ListItemIcon>

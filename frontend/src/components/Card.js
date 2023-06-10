@@ -5,7 +5,7 @@ import { GetIpfsUrlFromPinata } from "../utils"
 
 function Card(data) {
   const newTo = {
-    pathname: "/nft/" + data.data.tokenId,
+    pathname: "/user/nft/" + data.data.tokenId,
   }
   const IPFSUrl = GetIpfsUrlFromPinata(data.data.image)
   return (

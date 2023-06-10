@@ -1,12 +1,15 @@
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Grid from "@mui/material/Grid"
-import Card from "../components/Card"
+import Card from "../../components/Card"
 import { useParams } from "react-router-dom"
 import { Box, Container } from "@mui/material"
-import MarketplaceJSON from "../Marketplace.json"
+import MarketplaceJSON from "../../Marketplace.json"
+import { Context } from "../../App"
 
 export default function YourNFTs() {
+  const { isWalletConnected } = useContext(Context)
+
   const [data, updateData] = useState([])
   const [dataFetched, updateFetched] = useState(false)
   const [address, updateAddress] = useState("0x")
@@ -64,7 +67,7 @@ export default function YourNFTs() {
 
   const params = useParams()
   const tokenId = params.tokenId
-  if (!dataFetched) getNFTData(tokenId)
+  if (!dataFetched && isWalletConnected) getNFTData(tokenId)
 
   return (
     <Container>
@@ -77,11 +80,15 @@ export default function YourNFTs() {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {data.map((item, index) => (
-            <Grid item xs={12} sm={4} md={3} key={index}>
-              <Card data={item} />
-            </Grid>
-          ))}
+          {isWalletConnected ? (
+            data.map((item, index) => (
+              <Grid item xs={12} sm={4} md={3} key={index}>
+                <Card data={item} />
+              </Grid>
+            ))
+          ) : (
+            <span>Connect Your Wallet to view your NFTs.</span>
+          )}
         </Grid>
       </Box>
     </Container>

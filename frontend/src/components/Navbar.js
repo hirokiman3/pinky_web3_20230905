@@ -10,6 +10,7 @@ import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded"
 
 function Navbar() {
   const { isDarkMode, setIsDarkMode, userInfo } = useContext(Context)
+
   const handleModeChange = (e) => {
     const checked = e.target.checked
     setIsDarkMode(checked)

@@ -1,9 +1,9 @@
 import React from "react"
 import axios from "axios"
 import { useState } from "react"
-import { GetIpfsUrlFromPinata } from "../utils"
-import MarketplaceJSON from "../Marketplace.json"
 import { useParams } from "react-router-dom"
+import { GetIpfsUrlFromPinata } from "../../utils"
+import MarketplaceJSON from "../../Marketplace.json"
 
 function SingleNFT(props) {
   const [data, updateData] = useState({})

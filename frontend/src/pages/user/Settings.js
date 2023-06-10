@@ -1,17 +1,27 @@
 import { Context } from "../../App"
+import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext, useCallback } from "react"
 import { Box, Button, Container, Stack, TextField } from "@mui/material"
-import { useNavigate } from "react-router-dom"
-import { connect } from "mongoose"
+import { useSelector, useDispatch } from "react-redux"
+import { updateUserProfile, detailsUser } from "../../actions/userActions"
+import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants"
 
 export default function UserSettings() {
   const navigate = useNavigate()
-  //   Wallet
-  const [connected, toggleConnect] = useState(false)
-  const [currAddress, updateAddress] = useState("")
+  const dispatch = useDispatch()
 
-  // Importing userInfo through useContext
-  const { userInfo } = useContext(Context)
+  const { userInfo, isWalletConnected, currentAddress, setCurrentAddress } =
+    useContext(Context)
+
+  const userDetails = useSelector((state) => state.userDetails)
+  const { user } = userDetails
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = userUpdateProfile
 
   // State Variables
   const [fullName, setFullName] = useState(userInfo.name)
@@ -21,14 +31,6 @@ export default function UserSettings() {
   const [confirmPassword, setConfirmPassword] = useState(userInfo.username)
   const [openAiSecret, setOpenAiSecret] = useState(userInfo.secret)
   const [organizationId, setOrganizationId] = useState(userInfo.org_id)
-
-  const getAddress = useCallback(async () => {
-    const ethers = require("ethers")
-    const provider = await new ethers.providers.Web3Provider(window.ethereum)
-    const signer = await provider.getSigner()
-    const addr = await signer.getAddress()
-    updateAddress(addr)
-  }, [updateAddress])
 
   const connectWebsite = async () => {
     try {
@@ -42,8 +44,15 @@ export default function UserSettings() {
       }
       await window.ethereum
         .request({ method: "eth_requestAccounts" })
-        .then(() => {
-          getAddress()
+        .then(async () => {
+          // getAddress()
+          const ethers = require("ethers")
+          const provider = await new ethers.providers.Web3Provider(
+            window.ethereum
+          )
+          const signer = await provider.getSigner()
+          const addr = await signer.getAddress()
+          setCurrentAddress(addr)
         })
     } catch (error) {
       console.log("Error occured while connecting wallet: ", error.message)
@@ -51,18 +60,42 @@ export default function UserSettings() {
     }
   }
 
-  useEffect(() => {
-    if (window.ethereum === undefined) return
-
-    let val = window.ethereum.isConnected()
-    if (val) {
-      getAddress()
-      toggleConnect(val)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // dispatch update profile
+    if (password !== confirmPassword) {
+      alert("Password and Confirm Password Are Not Matched")
+    } else {
+      dispatch(
+        updateUserProfile({
+          userId: userInfo._id,
+          fullName,
+          username,
+          email,
+          password,
+          organizationId,
+          openAiSecret,
+        })
+      )
     }
+  }
+
+  useEffect(() => {
+    if (!user) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET })
+      dispatch(detailsUser(userInfo._id))
+    } else {
+      setFullName(user.name)
+      setUsername(user.username)
+      setEmail(user.email)
+      setOrganizationId(user.org_id)
+      setOpenAiSecret(user.secret)
+    }
+
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [getAddress, currAddress])
+  }, [dispatch, userInfo._id, user])
 
   return (
     <Container maxWidth='md'>
@@ -82,7 +115,7 @@ export default function UserSettings() {
               Account Settings
             </h3>
           </Box>
-          <Box component='form' sx={{ marginY: 4 }}>
+          <Box component='form' sx={{ marginY: 4 }} onSubmit={handleSubmit}>
             <Stack spacing={2}>
               <TextField
                 fullWidth
@@ -178,45 +211,47 @@ export default function UserSettings() {
                   }}
                 />
               </Stack>
-
-              <hr></hr>
-
-              <h5
-                style={{
-                  margin: 0,
-                  marginTop: 20,
-                  color: "rgba(0, 0, 0, 0.8)",
-                  fontWeight: 500,
-                }}
-              >
-                Wallet Settings
-              </h5>
-              <Box>
-                <Button variant='contained' onClick={() => connectWebsite()}>
-                  {connected ? "Connected" : "Connect Wallet"}
-                </Button>
-                <br></br>
-                <h6
-                  style={{
-                    color: "black",
-                    marginTop: 12,
-                  }}
+              <Box sx={{ textAlign: "end", marginTop: 2 }}>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  sx={{ textAlign: "end" }}
                 >
-                  {currAddress !== ""
-                    ? "Connected to"
-                    : "Not Connected. Please login to view NFTs"}{" "}
-                  {currAddress !== ""
-                    ? currAddress.substring(0, 15) + "..."
-                    : ""}{" "}
-                </h6>
+                  Updated Profile
+                </Button>
               </Box>
             </Stack>
+          </Box>
 
-            <Box sx={{ textAlign: "end", marginTop: 2 }}>
-              <Button variant='contained' sx={{ textAlign: "end" }}>
-                Save
-              </Button>
-            </Box>
+          <hr></hr>
+          <h5
+            style={{
+              margin: 0,
+              marginTop: 20,
+              color: "rgba(0, 0, 0, 0.8)",
+              fontWeight: 500,
+            }}
+          >
+            Wallet Settings
+          </h5>
+          <Box>
+            <Button variant='contained' onClick={() => connectWebsite()}>
+              {isWalletConnected ? "Connected" : "Connect Wallet"}
+            </Button>
+            <br></br>
+            <h6
+              style={{
+                color: "black",
+                marginTop: 12,
+              }}
+            >
+              {currentAddress !== ""
+                ? "Connected to"
+                : "Not Connected. Please login to view NFTs"}{" "}
+              {currentAddress !== ""
+                ? currentAddress //currentAddress.substring(0, 15) + "..."
+                : ""}{" "}
+            </h6>
           </Box>
         </Container>
       </Box>

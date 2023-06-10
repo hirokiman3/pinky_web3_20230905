@@ -124,7 +124,7 @@ export default function SignIn(props) {
                 id='password'
                 autoComplete='current-password'
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     value='remember'
@@ -137,7 +137,7 @@ export default function SignIn(props) {
                   />
                 }
                 label='Remember me'
-              />
+              /> */}
               <Button
                 type='submit'
                 fullWidth

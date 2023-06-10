@@ -28,8 +28,8 @@ userRouter.post(
           name: user.name,
           username: user.username,
           email: user.email,
-          secret: user.secret,
           org_id: user.org_id,
+          secret: user.secret,
           token: generateToken(user),
         })
         return
@@ -46,8 +46,8 @@ userRouter.post(
       name: req.body.name,
       username: req.body.username,
       email: req.body.email,
-      secret: "xxxxxxxxxxxx",
       org_id: "xxxxxxxxxxxx",
+      secret: "xxxxxxxxxxxx",
       password: bcrypt.hashSync(req.body.password, 8),
     })
     const createdUser = await user.save()
@@ -56,8 +56,8 @@ userRouter.post(
       name: createdUser.name,
       username: createdUser.username,
       email: createdUser.email,
-      secret: createdUser.secret,
       org_id: createdUser.org_id,
+      secret: createdUser.secret,
       token: generateToken(createdUser),
     })
   })
@@ -68,9 +68,10 @@ userRouter.put(
     const user = await User.findById(req.user._id)
     if (user) {
       user.name = req.body.name || user.name
+      user.username = req.body.username || user.username
       user.email = req.body.email || user.email
-      user.secret = req.body.secret || user.secret
       user.org_id = req.body.org_id || user.org_id
+      user.secret = req.body.secret || user.secret
 
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8)
@@ -80,9 +81,10 @@ userRouter.put(
       res.send({
         _id: updatedUser._id,
         name: updatedUser.name,
+        username: updatedUser.username,
         email: updatedUser.email,
-        secret: updatedUser.secret,
         org_id: updatedUser.org_id,
+        secret: updatedUser.secret,
         token: generateToken(updatedUser),
       })
     }
