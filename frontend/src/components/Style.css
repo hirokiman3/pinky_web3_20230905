@@ -106,10 +106,11 @@
 .toggle-label svg {
 	font-size: 20px;
 }
-.light-mode .toggle-label svg {
+
+.light .toggle-label svg {
 	color: #001e3c;
 }
-.dark-mode .toggle-label svg {
+.dark .toggle-label svg {
 	color: #fff;
 }
 
@@ -118,7 +119,7 @@
 }
 
 .toggle-label::before {
-	content: '';
+	content: "";
 	display: block;
 	position: absolute;
 	left: 2px;
@@ -141,7 +142,4 @@ body.dark-mode .nft-card {
 }
 body.dark-mode .nft-modal {
 	color: rgba(0, 0, 0, 0.8);
-}
-body .nft-card h4 {
-	font-weight: 400 !important;
 }
