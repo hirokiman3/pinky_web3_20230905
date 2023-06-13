@@ -114,7 +114,7 @@ export default function Nft(props) {
                 {data.description ||
                   "Immerse yourself in the beauty of nature with this stunning NFT artwork."}
               </p>
-              <div className='meta-data my-3 my-8'>
+              <div className='meta-data'>
                 <div className='item mb-1'>
                   <h5 className='font-bold dark:text-gray-200 uppercase'>
                     Owner
