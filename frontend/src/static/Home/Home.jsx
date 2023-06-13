@@ -22,7 +22,7 @@ export default function Home() {
 						<PromptField />
 					</div>
 				</div>
-				<div className="position-absolute bottom-10 flex items-center gap-4">
+				<div className="position-absolute bottom-10 flex items-center gap-4 max-md:mb-8">
 					<h4 className="text-lg font-bold dark:text-slate-200">
 						Powered With
 					</h4>
