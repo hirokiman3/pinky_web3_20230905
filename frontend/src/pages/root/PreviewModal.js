@@ -6,6 +6,7 @@ import { uploadJSONToIPFS } from "../../pinata"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+
 export default function PreviewModal({
   previewOpen,
   setImageLoaded,
@@ -90,7 +91,7 @@ export default function PreviewModal({
       activeImage = []
       previewOpen = false
       updateFormParams({ name: "", description: "", price: "" })
-      navigate("/user/nfts")
+      navigate("/marketplace")
     } catch (e) {
       alert("Upload error" + e)
     }

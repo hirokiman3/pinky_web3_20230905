@@ -74,6 +74,7 @@ function SingleNFT(props) {
       alert("Upload Error" + e)
     }
   }
+
   const params = useParams()
   const tokenId = params.tokenId
   if (!dataFetched) getNFTData(tokenId)
