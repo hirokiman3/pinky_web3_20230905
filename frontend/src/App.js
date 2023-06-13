@@ -7,6 +7,7 @@ import Marketplace from "./static/Preview/Marketplace"
 import Settings from "./static/User/Settings"
 import Error404 from "./pages/errors/Error404"
 import MintNft from "./static/Preview/MintNft"
+import YourNfts from "./static/User/YourNfts"
 import { createContext, useState, useEffect } from "react"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
@@ -40,7 +41,7 @@ function App() {
     else setIsWalletConnected(false)
 
     localStorage.setItem("walletAddress", currentAddress)
-  }, [isDarkMode])
+  }, [isDarkMode, currentAddress])
 
   // Handle Authentication
   const userSignin = useSelector((state) => state.userSignin)
@@ -72,6 +73,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path='/marketplace' element={<Marketplace />} />
+            <Route path='/your-nfts' element={<YourNfts />} />
             <Route path='/nft/:tokenId' element={<Nft />} />
             <Route path='/mint-nft' element={<MintNft />} />
             <Route path='/settings' element={<Settings />} />

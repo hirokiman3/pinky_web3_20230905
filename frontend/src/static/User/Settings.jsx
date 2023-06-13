@@ -1,22 +1,21 @@
 import { Context } from "../../App"
 import Navbar from "../../components/Navbar"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, Container } from "@mui/material"
+import { Box, Button, Container, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import InputVariant1 from "../../components/ui/InputVariant1"
 import React, { useEffect, useState, useContext } from "react"
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants"
-import { updateUserProfile, detailsUser } from "../../actions/userActions"
+import { updateUserProfile } from "../../actions/userActions"
 
 export default function Settings() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { userInfo, isWalletConnected, currentAddress, setCurrentAddress } =
+  const { isWalletConnected, currentAddress, setCurrentAddress } =
     useContext(Context)
 
-  const userDetails = useSelector((state) => state.userDetails)
-  const { user } = userDetails
+  const userSignin = useSelector((state) => state.userSignin)
+  const { userInfo } = userSignin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const {
@@ -29,8 +28,8 @@ export default function Settings() {
   const [fullName, setFullName] = useState(userInfo.name)
   const [email, setEmail] = useState(userInfo.email)
   const [username, setUsername] = useState(userInfo.username)
-  const [password, setPassword] = useState(userInfo.username)
-  const [confirmPassword, setConfirmPassword] = useState(userInfo.username)
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [openAiSecret, setOpenAiSecret] = useState(userInfo.secret)
   const [organizationId, setOrganizationId] = useState(userInfo.org_id)
 
@@ -83,21 +82,14 @@ export default function Settings() {
   }
 
   useEffect(() => {
-    if (!user) {
+    if (successUpdate) {
       dispatch({ type: USER_UPDATE_PROFILE_RESET })
-      dispatch(detailsUser(userInfo._id))
-    } else {
-      setFullName(user.name)
-      setUsername(user.username)
-      setEmail(user.email)
-      setOrganizationId(user.org_id)
-      setOpenAiSecret(user.secret)
     }
 
     window.ethereum.on("accountsChanged", function (accounts) {
       console.log("Wallet acccount changed.....")
     })
-  }, [dispatch, userInfo._id, user])
+  }, [dispatch, successUpdate])
 
   return (
     <>
@@ -109,34 +101,82 @@ export default function Settings() {
         <Box component='form' onSubmit={handleSubmit}>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <div className='row-1'>
-              <InputVariant1
-                label='Title'
-                id='accountTitle'
-                className='mb-1'
-                value={fullName}
-                onChange={(event) => {
-                  setFullName(event.target.value)
-                }}
-              />
-              <InputVariant1
-                label='Username'
-                id='accountUsername'
-                className='mb-1'
-                value={username}
-                onChange={(event) => {
-                  setUsername(event.target.value)
-                }}
-              />
-              <InputVariant1
-                label='Your OpenAI Organization ID'
-                value={organizationId}
-                onChange={(event) => {
-                  setOrganizationId(event.target.value)
-                }}
-              />
+              <div className='mb-1'>
+                <label
+                  htmlFor='fullName'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Full Name
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='fullName'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  size='small'
+                />
+              </div>
+
+              <div className='mb-1'>
+                <label
+                  htmlFor='userName'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Username
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='userName'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  size='small'
+                />
+              </div>
+
+              <div className=''>
+                <label
+                  htmlFor='orgId'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Open AI Orgnisation ID
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='orgId'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={organizationId}
+                  onChange={(e) => setOrganizationId(e.target.value)}
+                  size='small'
+                />
+              </div>
+
               <h4 className='text-lg font-bold mt-6 mb-[4px] uppercase dark:text-gray-200'>
                 Connect Your Wallet
               </h4>
+
               <Button variant='contained' onClick={() => connectWebsite()}>
                 {isWalletConnected ? "Connected" : "Connect Wallet"}
               </Button>
@@ -145,56 +185,117 @@ export default function Settings() {
                   ? "Connected to"
                   : "Not Connected. Please login to view NFTs"}{" "}
                 {currentAddress !== ""
-                  ? currentAddress //currentAddress.substring(0, 15) + "..."
+                  ? currentAddress.substring(0, 15) + "..."
                   : ""}
               </h6>
             </div>
             <div className='row-2'>
-              <InputVariant1
-                label='Email'
-                id='accountEmail'
-                className='mb-1'
-                type='email'
-                value={email}
-                onChange={(event) => {
-                  setEmail(event.target.value)
-                }}
-              />
-              <InputVariant1
-                label='Your OpenAI Secret Key'
-                id='openAiKey'
-                className='mb-1'
-                value={openAiSecret}
-                onChange={(event) => {
-                  setOpenAiSecret(event.target.value)
-                }}
-              />
-              <div className='flex gap-1 mb-2'>
-                <InputVariant1
-                  label='New Password'
-                  placeholder='Password'
-                  id='accountPass'
-                  className='mb-1 w-full'
-                  value={password}
-                  onChange={(event) => {
-                    setPassword(event.target.value)
+              <div className='mb-1'>
+                <label
+                  htmlFor='email'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Email
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='email'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
                   }}
-                />
-                <InputVariant1
-                  label='Confirm Password'
-                  placeholder='Confirm Password'
-                  id='accountConfirmPass'
-                  className='mb-1 w-full'
-                  value={confirmPassword}
-                  onChange={(event) => {
-                    setConfirmPassword(event.target.value)
-                  }}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  size='small'
                 />
               </div>
-              <Button type='submit' variant='contained' fullWidth>
-                Update Profile
-              </Button>
+
+              <div className='mb-1'>
+                <label
+                  htmlFor='openai'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Open AI Secret
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='openai'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={openAiSecret}
+                  onChange={(e) => setOpenAiSecret(e.target.value)}
+                  size='small'
+                />
+              </div>
+
+              <div className='flex gap-1 mb-2'>
+                <label
+                  htmlFor='pass'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Password
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='pass'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  size='small'
+                />
+              </div>
+
+              <div className='mb-1 w-full'>
+                <label
+                  htmlFor='conPass'
+                  className='block mb-[4px] font-medium dark:text-slate-200 tracking-wide'
+                >
+                  Confirm Password
+                </label>
+                <TextField
+                  type='text'
+                  fullWidth
+                  id='conPass'
+                  variant='outlined'
+                  sx={{
+                    "& .MuiInputBase-input": {
+                      backgroundColor: "#fff",
+                      borderRadius: 1,
+                    },
+                  }}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  size='small'
+                />
+              </div>
             </div>
+            <Button type='submit' variant='contained' fullWidth>
+              Update Profile
+            </Button>
+            {loadingUpdate ? (
+              <span>Upadating user...</span>
+            ) : errorUpdate ? (
+              <span>{errorUpdate}</span>
+            ) : (
+              <span></span>
+            )}
           </div>
         </Box>
       </Container>

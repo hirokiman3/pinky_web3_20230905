@@ -79,23 +79,56 @@ export const detailsUser = (userId) => async (dispatch, getState) => {
     dispatch({ type: USER_DETAILS_FAIL, payload: message })
   }
 }
-export const updateUserProfile = (user) => async (dispatch, getState) => {
-  dispatch({ type: USER_UPDATE_PROFILE_REQUEST, payload: user })
-  const {
-    userSignin: { userInfo },
-  } = getState()
-  try {
-    const { data } = await Axios.put(`/api/users/profile`, user, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
+export const updateUserProfile =
+  ({
+    userId,
+    fullName,
+    username,
+    email,
+    password,
+    organizationId,
+    openAiSecret,
+  }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: USER_UPDATE_PROFILE_REQUEST,
+      payload: {
+        userId,
+        fullName,
+        username,
+        email,
+        password,
+        organizationId,
+        openAiSecret,
+      },
     })
-    dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data })
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data })
-    localStorage.setItem("userInfo", JSON.stringify(data))
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    dispatch({ type: USER_UPDATE_PROFILE_FAIL, payload: message })
+    const {
+      userSignin: { userInfo },
+    } = getState()
+    try {
+      const { data } = await Axios.put(
+        `/api/users/profile`,
+        {
+          userId,
+          fullName,
+          username,
+          email,
+          password,
+          organizationId,
+          openAiSecret,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      )
+      dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data })
+      dispatch({ type: USER_SIGNIN_SUCCESS, payload: data })
+      localStorage.setItem("userInfo", JSON.stringify(data))
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      dispatch({ type: USER_UPDATE_PROFILE_FAIL, payload: message })
+    }
   }
-}

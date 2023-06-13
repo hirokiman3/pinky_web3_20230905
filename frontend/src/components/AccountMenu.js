@@ -114,7 +114,7 @@ export default function AccountMenu() {
           </ListItemIcon>
           Prompt
         </MenuItem>
-        <MenuItem onClick={() => navigate("/marketplace")}>
+        <MenuItem onClick={() => navigate("/your-nfts")}>
           <ListItemIcon>
             <CollectionsIcon fontSize='small' />
           </ListItemIcon>

@@ -65,13 +65,14 @@ userRouter.post(
 userRouter.put(
   "/profile",
   expressAsyncHandler(async (req, res) => {
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.body.userId)
     if (user) {
-      user.name = req.body.name || user.name
+      user.name = req.body.fullName || user.name
       user.username = req.body.username || user.username
       user.email = req.body.email || user.email
-      user.org_id = req.body.org_id || user.org_id
-      user.secret = req.body.secret || user.secret
+      user.org_id = req.body.organizationId || user.org_id
+      user.secret = req.body.openAiSecret || user.secret
+      user.password = req.body.password || user.password
 
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8)
