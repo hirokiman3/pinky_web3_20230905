@@ -1,19 +1,19 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import Modal from '@mui/material/Modal'
-import Lottie from 'lottie-react'
-import LoadingAnimation from '../assets/lottie-animations/loading.json'
+import * as React from "react"
+import Box from "@mui/material/Box"
+import Modal from "@mui/material/Modal"
+import Lottie from "lottie-react"
+import LoadingAnimation from "../assets/lottie-animations/loading.json"
 
 const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
+	position: "absolute",
+	top: "50%",
+	left: "50%",
+	transform: "translate(-50%, -50%)",
 	width: 250,
-	color: 'rgba(255,255,255,0.8)',
-	textAlign: 'center',
+	color: "rgba(255,255,255,0.8)",
+	textAlign: "center",
 	marginTop: -6,
-	'& p': { marginTop: -6 },
+	"& p": { marginTop: -6 },
 }
 
 export default function LoadingModal({ open, setOpen }) {
@@ -24,9 +24,10 @@ export default function LoadingModal({ open, setOpen }) {
 			<Modal
 				open={open}
 				onClose={handleClose}
-				aria-labelledby='modal-modal-title'
-				aria-describedby='modal-modal-description'
+				aria-labelledby="loading"
+				aria-describedby="loading animation while NFT is generating"
 				disableScrollLock
+				disableEnforceFocus
 			>
 				<Box sx={style}>
 					<Lottie animationData={LoadingAnimation} loop={true} />

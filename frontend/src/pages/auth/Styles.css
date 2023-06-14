@@ -1,14 +1,14 @@
-body.dark-mode .auth-card {
+.dark .auth-card {
 	background-color: #fff;
 	padding: 2rem;
 	border-radius: 20px;
 	filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
 }
-body.dark-mode .auth-typo,
+.dark .auth-typo,
 .dark-mode .auth-footer {
 	color: rgba(255, 255, 255, 0.8);
 }
-body.bright-mode .auth-typo,
+.bright .auth-typo,
 .MuiFormControlLabel-label {
 	color: rgba(0, 0, 0, 0.8);
 }

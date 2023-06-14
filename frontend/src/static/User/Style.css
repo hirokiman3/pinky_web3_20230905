@@ -1,0 +1,5 @@
+@media (min-width: 800px) and (min-height: 800px) {
+	.settings-container {
+		height: 80vh;
+	}
+}

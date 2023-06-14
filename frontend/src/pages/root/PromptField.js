@@ -95,6 +95,7 @@ export default function PromptField() {
 				setPreviewOpen(true)
 			}
 		}
+		// eslint-disable-next-line
 	}, [userInfo, newlyGeneratedNFT])
 
 	return (

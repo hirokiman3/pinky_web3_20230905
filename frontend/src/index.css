@@ -84,10 +84,13 @@ button {
 }
 
 /* Errors page */
-.dark-mode .errors-page a {
-	color: rgba(255, 255, 255, 0.7);
+.dark .errors-page a {
+	color: rgba(255, 255, 255, 0.7) !important;
 	transition: 200ms;
 }
-.dark-mode .errors-page a:hover {
+.dark .errors-page a:hover {
 	color: rgba(255, 255, 255, 0.8);
+}
+body {
+	background-color: transparent !important;
 }
