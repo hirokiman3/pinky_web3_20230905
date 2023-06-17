@@ -19,6 +19,12 @@ export const generate = (prompt, org_id, secret) => async (dispatch) => {
     dispatch({ type: NFT_GENERATE_SUCCESS, payload: data })
     localStorage.setItem("newlyGeneratedNFT", JSON.stringify(data))
   } catch (error) {
+    if (error.response) {
+      console.log("Image error status: ", error.response.status)
+      console.log("Image error data: ", error.response.data)
+    } else {
+      console.log("Image error message: ", error.message)
+    }
     dispatch({
       type: NFT_GENERATE_FAIL,
       payload:
