@@ -115,7 +115,7 @@ export default function Nft(props) {
                   "Immerse yourself in the beauty of nature with this stunning NFT artwork."}
               </p>
               <div className='meta-data'>
-                <div className='item mb-1'>
+                <div className='item mb-1 mt-2.5'>
                   <h5 className='font-bold dark:text-gray-200 uppercase'>
                     Owner
                   </h5>
@@ -137,7 +137,7 @@ export default function Nft(props) {
                     Price
                   </h5>
                   <p className='dark:text-gray-300 text-gray-500'>
-                    {data.price || "0.004"} ETH
+                    {data.price || "0.004"} MATIC
                   </p>
                 </div>
               </div>

@@ -123,11 +123,11 @@ export default function YourNfts() {
                         }}
                       />
                       <div className='my-4'>
-                        <h4 className='mt-3 font-bold text-[17px] dark:text-slate-200 text uppercase truncate lg:max-w-[200px]'>
+                        <h4 className='ml-1.5 mt-3 font-bold text-[17px] dark:text-slate-200 text uppercase truncate lg:max-w-[200px]'>
                           {item.name}
                         </h4>
-                        <h5 className='mt-1 text-slate-600 dark:text-slate-300'>
-                          {item.price}
+                        <h5 className='ml-1.5 mt-1 text-slate-600 dark:text-slate-300'>
+                          {item.price} MATIC
                         </h5>
                       </div>
                     </Box>
