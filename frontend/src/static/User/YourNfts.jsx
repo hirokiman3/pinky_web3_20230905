@@ -40,7 +40,7 @@ export default function YourNfts() {
 
     const items = await Promise.all(
       transaction.map(async (i) => {
-        const tokenURI = await contract.tokenURI(i.tokenId)
+        var tokenURI = await contract.tokenURI(i.tokenId)
         let meta = await axios.get(tokenURI)
         meta = meta.data
 

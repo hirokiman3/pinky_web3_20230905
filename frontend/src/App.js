@@ -37,10 +37,14 @@ function App() {
       document.documentElement.classList.remove("dark")
       document.documentElement.classList.add("bright")
     }
-    if (currentAddress) setIsWalletConnected(true)
-    else setIsWalletConnected(false)
 
-    localStorage.setItem("walletAddress", currentAddress)
+    localStorage.setItem("walletAddress", currentAddress ? currentAddress : "")
+    if (currentAddress) {
+      setIsWalletConnected(true)
+    } else {
+      setIsWalletConnected(false)
+    }
+
   }, [isDarkMode, currentAddress])
 
   // Handle Authentication

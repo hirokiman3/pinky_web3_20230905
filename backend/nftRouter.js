@@ -12,23 +12,15 @@ const nftRouter = express.Router()
 nftRouter.post("/generate", async (req, res) => {
   try {
     const prompt = req.body.prompt
-    const no = req.body.no
-    const dimensions = req.body.dimensions
-    const username = req.body.username
-    const org_id = req.body.org_id
-    const secret = req.body.secret
-
     const configuration = new Configuration({
-      organization: org_id || process.env.OPENAI_ORG_ID,
-      apiKey: secret || process.env.OPENAI_API_KEY,
+      organization: req.body.org_id || process.env.OPENAI_ORG_ID,
+      apiKey: req.body.secret || process.env.OPENAI_API_KEY,
     })
 
     const openai = new OpenAIApi(configuration)
+
     const result = await openai.createImage({
       prompt,
-      n: no,
-      size: dimensions,
-      user: username,
     })
 
     const url = result.data.data[0].url
@@ -49,7 +41,12 @@ nftRouter.post("/generate", async (req, res) => {
       date: date,
     })
   } catch (error) {
-    console.log("nft Router Line 49", error.message)
+    if (error.response) {
+      console.log("Image error status: ", error.response.status)
+      console.log("Image error data: ", error.response.data)
+    } else {
+      console.log("Image error message: ", error.message)
+    }
   }
 })
 

@@ -42,22 +42,10 @@ export default function PromptField() {
 		date: "",
 	})
 
-	const no = 1
-	const dimensions = "256x256"
-
 	const handleGenerate = async () => {
 		if (userInfo) {
 			setOpen(true)
-			dispatch(
-				generate(
-					prompt,
-					no,
-					dimensions,
-					userInfo.username,
-					userInfo.org_id,
-					userInfo.secret
-				)
-			)
+			dispatch(generate(prompt, userInfo.org_id, userInfo.secret))
 		} else {
 			navigate("/signin")
 		}

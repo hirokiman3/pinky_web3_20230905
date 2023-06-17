@@ -75,9 +75,10 @@ export default function Marketplace() {
             {data.map((item, index) => {
               const IPFSUrl = GetIpfsUrlFromPinata(item.image)
               return (
-                <Link to={`/nft/${item.tokenId}`}>
+                <Link to={`/nft/${item.tokenId}`} key={index}>
                   <ImageListItem key={index}>
                     <Box
+                      key={index}
                       className='nft-card'
                       sx={{
                         overflow: "hidden",
