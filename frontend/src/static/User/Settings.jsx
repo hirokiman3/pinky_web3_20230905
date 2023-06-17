@@ -302,6 +302,7 @@ export default function Settings() {
               >
                 {isWalletConnected ? "Connected" : "Connect Wallet"}
               </Button>
+              <span> {isWalletConnected ? currentAddress : ""}</span>
             </div>
           </div>
         </Box>
