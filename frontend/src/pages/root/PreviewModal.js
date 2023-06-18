@@ -107,180 +107,180 @@ export default function PreviewModal({
 	}
 
 	return (
-		<Modal
-			open={previewOpen}
-			onClose={handlePreviewClose}
-			disableScrollLock
-			sx={{ height: "100%" }}
-			className="nft-modal"
-			disableEnforceFocus
-		>
-			<Box
-				sx={{
-					position: "absolute",
-					top: "50%",
-					left: "50%",
-					transform: "translate(-50%, -50%)",
-					outline: "none",
-				}}
-			>
-				<Box
-					sx={{
-						minHeight: { md: 350 },
-						width: { xs: 300, sm: 350, md: 650 },
-						margin: "auto",
-						backgroundColor: "#fff",
-						borderRadius: 5,
-						outline: "none",
-						padding: 2,
-						display: { md: "flex" },
-						gap: 2,
-					}}
-				>
-					{!imageLoaded && (
-						<>
-							<Skeleton variant="rectangular" width="100%" height={280} />
-							<Box sx={{ width: { xs: "100%", md: 500 } }}>
-								<Skeleton
-									variant="rectangular"
-									width="100%"
-									height={40}
-									sx={{ marginBottom: 2 }}
-								/>
-								<Skeleton
-									variant="rectangular"
-									width="100%"
-									height={40}
-									sx={{ marginBottom: 2 }}
-								/>
-								<Skeleton
-									variant="rectangular"
-									width="100%"
-									height={40}
-									sx={{ marginBottom: 1 }}
-								/>
-							</Box>
-						</>
-					)}
-					<Box
-						sx={{
-							borderRadius: 4,
-							marginBottom: "1.2rem",
-							visibility: imageLoaded ? "visible" : "hidden",
-							width: imageLoaded ? "100%" : 0,
-							// Give stylings to image from here
-							"& img": {
-								height: { md: "100%" },
-								width: "100%",
-								objectFit: "contain",
-								borderRadius: 4,
-								overflow: "hidden",
-							},
-						}}
-					>
-						<img
-							src={`${activeImage.src}`}
-							onLoad={() => setImageLoaded(true)}
-							alt="preview"
-						/>
-					</Box>
+    <Modal
+      open={previewOpen}
+      onClose={handlePreviewClose}
+      disableScrollLock
+      sx={{ height: "100%" }}
+      className='nft-modal'
+      disableEnforceFocus
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          outline: "none",
+        }}
+      >
+        <Box
+          sx={{
+            minHeight: { md: 350 },
+            width: { xs: 300, sm: 350, md: 650 },
+            margin: "auto",
+            backgroundColor: "#fff",
+            borderRadius: 5,
+            outline: "none",
+            padding: 2,
+            display: { md: "flex" },
+            gap: 2,
+          }}
+        >
+          {!imageLoaded && (
+            <>
+              <Skeleton variant='rectangular' width='100%' height={280} />
+              <Box sx={{ width: { xs: "100%", md: 500 } }}>
+                <Skeleton
+                  variant='rectangular'
+                  width='100%'
+                  height={40}
+                  sx={{ marginBottom: 2 }}
+                />
+                <Skeleton
+                  variant='rectangular'
+                  width='100%'
+                  height={40}
+                  sx={{ marginBottom: 2 }}
+                />
+                <Skeleton
+                  variant='rectangular'
+                  width='100%'
+                  height={40}
+                  sx={{ marginBottom: 1 }}
+                />
+              </Box>
+            </>
+          )}
+          <Box
+            sx={{
+              borderRadius: 4,
+              marginBottom: "1.2rem",
+              visibility: imageLoaded ? "visible" : "hidden",
+              width: imageLoaded ? "100%" : 0,
+              // Give stylings to image from here
+              "& img": {
+                height: { md: "100%" },
+                width: "100%",
+                objectFit: "contain",
+                borderRadius: 4,
+                overflow: "hidden",
+              },
+            }}
+          >
+            <img
+              src={`${activeImage.src}`}
+              onLoad={() => setImageLoaded(true)}
+              alt='preview'
+            />
+          </Box>
 
-					<Box
-						component="div"
-						sx={{
-							"& a": {
-								color: "rgba(0,0,0,0.6)",
-								transition: 200,
-								"&:hover": { color: "rgba(0,0,0,0.8)" },
-							},
-						}}
-					>
-						{/* Mint Form */}
-						{isImageFromPrompt && imageLoaded && (
-							<Box
-								component="form"
-								noValidate
-								sx={{ marginTop: { xs: 1, md: 0 } }}
-							>
-								<TextField
-									margin="dense"
-									required
-									fullWidth
-									id="Name"
-									label="Enter a name"
-									name="name"
-									type="text"
-									autoComplete="name"
-									onChange={e =>
-										updateFormParams({ ...formParams, name: e.target.value })
-									}
-									value={formParams.name}
-									autoFocus
-									size={getSizeByBreakpoint()}
-								/>
-								<TextField
-									margin="dense"
-									required
-									fullWidth
-									name="desc"
-									label="Description"
-									type="text"
-									id="desc"
-									value={formParams.description}
-									onChange={e =>
-										updateFormParams({
-											...formParams,
-											description: e.target.value,
-										})
-									}
-									rows={2}
-									multiline
-									size={getSizeByBreakpoint()}
-								/>
-								<TextField
-									margin="dense"
-									required
-									fullWidth
-									name="price"
-									label="Price"
-									type="number"
-									id="price"
-									min="0"
-									value={formParams.price}
-									inputProps={{
-										step: "0.00001",
-									}}
-									InputProps={{
-										endAdornment: (
-											<InputAdornment position="start">ETH</InputAdornment>
-										),
-									}}
-									onChange={e =>
-										updateFormParams({ ...formParams, price: e.target.value })
-									}
-									size={getSizeByBreakpoint()}
-								/>
-								<Button
-									fullWidth
-									variant="contained"
-									sx={{
-										mt: 2,
-										mb: 2,
-										backgroundColor: "#F25672",
-										color: "#fff !important",
-										"&:hover": { backgroundColor: "#C83B55" },
-									}}
-									onClick={e => {
-										listNFT(e)
-									}}
-								>
-									Mint
-								</Button>
-							</Box>
-						)}
-					</Box>
-				</Box>
-			</Box>
-		</Modal>
-	)
+          <Box
+            component='div'
+            sx={{
+              "& a": {
+                color: "rgba(0,0,0,0.6)",
+                transition: 200,
+                "&:hover": { color: "rgba(0,0,0,0.8)" },
+              },
+            }}
+          >
+            {/* Mint Form */}
+            {isImageFromPrompt && imageLoaded && (
+              <Box
+                component='form'
+                noValidate
+                sx={{ marginTop: { xs: 1, md: 0 } }}
+              >
+                <TextField
+                  margin='dense'
+                  required
+                  fullWidth
+                  id='Name'
+                  label='Enter a name'
+                  name='name'
+                  type='text'
+                  autoComplete='name'
+                  onChange={(e) =>
+                    updateFormParams({ ...formParams, name: e.target.value })
+                  }
+                  value={formParams.name}
+                  autoFocus
+                  size={getSizeByBreakpoint()}
+                />
+                <TextField
+                  margin='dense'
+                  required
+                  fullWidth
+                  name='desc'
+                  label='Description'
+                  type='text'
+                  id='desc'
+                  value={formParams.description}
+                  onChange={(e) =>
+                    updateFormParams({
+                      ...formParams,
+                      description: e.target.value,
+                    })
+                  }
+                  rows={2}
+                  multiline
+                  size={getSizeByBreakpoint()}
+                />
+                <TextField
+                  margin='dense'
+                  required
+                  fullWidth
+                  name='price'
+                  label='Price'
+                  type='number'
+                  id='price'
+                  min='0'
+                  value={formParams.price}
+                  inputProps={{
+                    step: "0.00001",
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='start'>MATIC</InputAdornment>
+                    ),
+                  }}
+                  onChange={(e) =>
+                    updateFormParams({ ...formParams, price: e.target.value })
+                  }
+                  size={getSizeByBreakpoint()}
+                />
+                <Button
+                  fullWidth
+                  variant='contained'
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    backgroundColor: "#F25672",
+                    color: "#fff !important",
+                    "&:hover": { backgroundColor: "#C83B55" },
+                  }}
+                  onClick={(e) => {
+                    listNFT(e)
+                  }}
+                >
+                  Mint
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
+  )
 }

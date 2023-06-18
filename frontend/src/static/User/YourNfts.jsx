@@ -78,7 +78,7 @@ export default function YourNfts() {
             Your NFTs
           </h2>
           <h5 className='text-slate-800 dark:text-slate-200'>
-            <strong>Total Value {totalPrice} ETH</strong>
+            <strong>Total Value {totalPrice} MATIC</strong>
           </h5>
         </Box>
         {isWalletConnected ? (
