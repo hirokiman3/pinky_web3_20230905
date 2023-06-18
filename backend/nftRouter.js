@@ -12,6 +12,10 @@ const nftRouter = express.Router()
 nftRouter.post("/generate", async (req, res) => {
   try {
     const prompt = req.body.prompt
+    const no = req.body.no
+    const dimension = req.body.dimension
+    const username = req.body.dimension
+
     const configuration = new Configuration({
       organization: req.body.org_id || process.env.OPENAI_ORG_ID,
       apiKey: req.body.secret || process.env.OPENAI_API_KEY,
@@ -21,6 +25,8 @@ nftRouter.post("/generate", async (req, res) => {
 
     const result = await openai.createImage({
       prompt,
+      size: dimension,
+      user: username,
     })
 
     const url = result.data.data[0].url
