@@ -3,10 +3,11 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import Marketplace from "../../Marketplace.json"
 import { uploadJSONToIPFS } from "../../pinata"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { toast } from "react-toastify"
 import { useSelector, useDispatch } from "react-redux"
 import { save } from "../../actions/nftActions"
+import { Context } from "../../App"
 
 export default function PreviewModal({
   previewOpen,
@@ -18,6 +19,7 @@ export default function PreviewModal({
 }) {
   const dispatch = useDispatch()
   const ethers = require("ethers")
+  const { isWalletConnected } = useContext(Context)
 
   const userSignin = useSelector((state) => state.userSignin)
   const { userInfo } = userSignin
@@ -30,6 +32,7 @@ export default function PreviewModal({
     description: activeImage.prompt,
     price: "",
   })
+
   const [tx, setTx] = useState("")
 
   const handleSave = () => {
@@ -301,6 +304,7 @@ export default function PreviewModal({
                 </Button>
 
                 <Button
+                  disabled={!isWalletConnected}
                   fullWidth
                   variant='contained'
                   sx={{

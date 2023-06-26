@@ -29,26 +29,19 @@ nftRouter.post("/generate", async (req, res) => {
     let config = ""
     let result = null
 
-    if (userInfo.trial) {
+    const u = await User.findById(userInfo._id)
+
+    if (u.trial) {
       config = new Configuration({
         organization: process.env.OPENAI_ORG_ID,
         apiKey: process.env.OPENAI_API_KEY,
       })
+      const openai = new OpenAIApi(config)
       const user = await User.findById(req.body.userInfo._id)
       if (user) {
         user.trial = false
         await user.save()
       }
-    } else {
-      config = new Configuration({
-        organization: userInfo.org_id,
-        apiKey: userInfo.secret,
-      })
-    }
-
-    const openai = new OpenAIApi(config)
-
-    if (userInfo.org_id && userInfo.secret) {
       result = await openai.createImage({
         prompt,
         size: dimension,
@@ -59,7 +52,7 @@ nftRouter.post("/generate", async (req, res) => {
       const imageResult = await fetch(url, { mode: "no-cors" })
       const blob = await imageResult.blob()
       const date = Date.now()
-      const imagePath = `./aiassets/${username}-${date}.png`
+      const imagePath = `./aiassets/${userInfo.username}-${date}.png`
       writeFileSync(imagePath, Buffer.from(await blob.arrayBuffer()))
 
       const __dirname = path.resolve()
@@ -67,17 +60,49 @@ nftRouter.post("/generate", async (req, res) => {
       const image = createReadStream(filepath)
 
       // now image converted like file object...
-      let p = await uploadFileToIPFS(image, prompt, username)
+      let p = await uploadFileToIPFS(image, prompt, userInfo.username)
 
       res.send({
         path: p,
         date: date,
       })
     } else {
-      res.send({
-        path: null,
-        message: "Your trial is expired. Update your OpenAI details!",
-      })
+      if (userInfo.org_id && userInfo.secret) {
+        config = new Configuration({
+          organization: userInfo.org_id,
+          apiKey: userInfo.secret,
+        })
+        const openai = new OpenAIApi(config)
+        result = await openai.createImage({
+          prompt,
+          size: dimension,
+          user: userInfo.username,
+        })
+        const url = result.data.data[0].url
+        // Save image to disk
+        const imageResult = await fetch(url, { mode: "no-cors" })
+        const blob = await imageResult.blob()
+        const date = Date.now()
+        const imagePath = `./aiassets/${userInfo.username}-${date}.png`
+        writeFileSync(imagePath, Buffer.from(await blob.arrayBuffer()))
+
+        const __dirname = path.resolve()
+        const filepath = path.join(__dirname, imagePath)
+        const image = createReadStream(filepath)
+
+        // now image converted like file object...
+        let p = await uploadFileToIPFS(image, prompt, userInfo.username)
+
+        res.send({
+          path: p,
+          date: date,
+        })
+      } else {
+        res.send({
+          path: null,
+          message: "Your trial is expired. Update your OpenAI details!",
+        })
+      }
     }
   } catch (error) {
     if (error.response) {
@@ -102,4 +127,16 @@ nftRouter.post("/save", async (req, res) => {
   res.send(createdNft)
 })
 
+nftRouter.delete(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const nft = await Nft.findById(req.params.id)
+    if (nft) {
+      const deletedNft = await nft.deleteOne()
+      res.send({ message: "Nft Deleted", nft: deletedNft })
+    } else {
+      res.status(404).send({ message: "Nft Not Found" })
+    }
+  })
+)
 export default nftRouter

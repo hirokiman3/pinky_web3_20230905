@@ -85,6 +85,7 @@ export default function PromptField() {
           setPreviewOpen(true)
         } else {
           toast.error(newlyGeneratedNFT.message)
+          setOpen(false)
         }
       }
     }

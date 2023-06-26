@@ -30,6 +30,7 @@ userRouter.post(
           email: user.email,
           org_id: user.org_id,
           secret: user.secret,
+          trial: user.trial,
           token: generateToken(user),
         })
         return
@@ -56,6 +57,7 @@ userRouter.post(
       email: createdUser.email,
       org_id: createdUser.org_id,
       secret: createdUser.secret,
+      trial: user.trial,
       token: generateToken(createdUser),
     })
   })
