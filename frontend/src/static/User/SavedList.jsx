@@ -32,7 +32,7 @@ function SavedList() {
   const uploadMetadataToIPFS = async () => {
     //Make sure that none of the fields are empty
     if (!name || !description || !price || !image) {
-      console.log("Please fill all the fields!")
+      toast.warn("Please fill all the fields!")
       return -1
     }
 
@@ -75,7 +75,8 @@ function SavedList() {
       const provider = await new ethers.providers.Web3Provider(window.ethereum)
       const signer = await provider.getSigner()
 
-      console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
+      toast.info("Uploading NFT(takes 5 mins).. please dont click anything!")
+
       //Pull the deployed contract instance
       let contract = new ethers.Contract(
         Marketplace.address,
@@ -94,11 +95,11 @@ function SavedList() {
       })
       await transaction.wait()
       setTx(transaction.hash)
-      alert("Successfully listed your NFT! :: ")
+      toast.success("Successfully listed your NFT!")
       deleteNft(id)
       localStorage.removeItem("newlyGeneratedNFT")
     } catch (e) {
-      alert("Upload error" + e)
+      toast.error("Error occured while listing your NFT!")
     }
   }
 
@@ -191,7 +192,11 @@ function SavedList() {
                   </Button>
 
                   {tx ? (
-                    <a href={`https://mumbai.polygonscan.com/tx/${tx}`}>
+                    <a
+                      href={`https://mumbai.polygonscan.com/tx/${tx}`}
+                      target='_blank'
+                      rel='noreferrer'
+                    >
                       view on polygon scan
                     </a>
                   ) : (

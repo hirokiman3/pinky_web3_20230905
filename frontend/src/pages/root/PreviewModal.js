@@ -92,7 +92,8 @@ export default function PreviewModal({
       const provider = await new ethers.providers.Web3Provider(window.ethereum)
       const signer = await provider.getSigner()
 
-      console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
+      toast.info("Uploading NFT(takes 5 mins).. please dont click anything!")
+
       //Pull the deployed contract instance
       let contract = new ethers.Contract(
         Marketplace.address,
@@ -111,7 +112,7 @@ export default function PreviewModal({
       })
       await transaction.wait()
       setTx(transaction.hash)
-      alert("Successfully listed your NFT! :: ")
+      toast.success("Successfully listed your NFT!")
       localStorage.removeItem("newlyGeneratedNFT")
       activeImage = []
       previewOpen = false
@@ -322,7 +323,11 @@ export default function PreviewModal({
                 </Button>
 
                 {tx ? (
-                  <a href={`https://mumbai.polygonscan.com/tx/${tx}`}>
+                  <a
+                    href={`https://mumbai.polygonscan.com/tx/${tx}`}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
                     view on polygon scan
                   </a>
                 ) : (
