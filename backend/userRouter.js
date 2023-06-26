@@ -46,8 +46,6 @@ userRouter.post(
       name: req.body.name,
       username: req.body.username,
       email: req.body.email,
-      org_id: "xxxxxxxxxxxx",
-      secret: "xxxxxxxxxxxx",
       password: bcrypt.hashSync(req.body.password, 8),
     })
     const createdUser = await user.save()
@@ -62,6 +60,7 @@ userRouter.post(
     })
   })
 )
+
 userRouter.put(
   "/profile",
   expressAsyncHandler(async (req, res) => {
@@ -84,6 +83,7 @@ userRouter.put(
         name: updatedUser.name,
         username: updatedUser.username,
         email: updatedUser.email,
+        trial: updatedUser.trial,
         org_id: updatedUser.org_id,
         secret: updatedUser.secret,
         token: generateToken(updatedUser),

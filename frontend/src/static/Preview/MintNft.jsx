@@ -81,7 +81,6 @@ export default function MintNft({ activeImage }) {
         value: listingPrice,
       })
       await transaction.wait()
-
       alert("Successfully listed your NFT!")
 
       localStorage.removeItem("newlyGeneratedNFT")

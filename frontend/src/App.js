@@ -11,6 +11,9 @@ import YourNfts from "./static/User/YourNfts"
 import { createContext, useState, useEffect } from "react"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import SavedList from "./static/User/SavedList"
 
 // Context
 export const Context = createContext()
@@ -44,7 +47,6 @@ function App() {
     } else {
       setIsWalletConnected(false)
     }
-
   }, [isDarkMode, currentAddress])
 
   // Handle Authentication
@@ -78,6 +80,7 @@ function App() {
           <Routes>
             <Route path='/marketplace' element={<Marketplace />} />
             <Route path='/your-nfts' element={<YourNfts />} />
+            <Route path='/saved-nfts' element={<SavedList />} />
             <Route path='/nft/:tokenId' element={<Nft />} />
             <Route path='/mint-nft' element={<MintNft />} />
             <Route path='/settings' element={<Settings />} />
@@ -86,6 +89,18 @@ function App() {
             <Route index path='/' element={<Home />} />
             <Route path='*' exact element={<Error404 />} />
           </Routes>
+          <ToastContainer
+            position='top-center'
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='dark'
+          />
         </ThemeProvider>
       </Context.Provider>
     </Router>

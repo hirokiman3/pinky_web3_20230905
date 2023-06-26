@@ -11,7 +11,11 @@ import {
   userSigninReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducers"
-import { nftGenerateReducer } from "./reducers/nftReducers"
+import {
+  myNftListReducer,
+  nftGenerateReducer,
+  saveNftReducer,
+} from "./reducers/nftReducers"
 const initialState = {
   userSignin: {
     userInfo: localStorage.getItem("userInfo")
@@ -29,6 +33,8 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   nftGenerate: nftGenerateReducer,
+  saveNft: saveNftReducer,
+  myNftList: myNftListReducer,
 })
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(

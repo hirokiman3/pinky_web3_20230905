@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import React, { useEffect, useState, useContext } from "react"
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants"
 import { updateUserProfile } from "../../actions/userActions"
-import { ToastContainer, toast } from "react-toastify"
+import {  toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 export default function Settings() {
@@ -306,18 +306,6 @@ export default function Settings() {
             </div>
           </div>
         </Box>
-        <ToastContainer
-          position='top-center'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='dark'
-        />
       </Container>
     </>
   )

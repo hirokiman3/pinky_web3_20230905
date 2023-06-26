@@ -4,109 +4,132 @@ import Button from "@mui/material/Button"
 import Marketplace from "../../Marketplace.json"
 import { uploadJSONToIPFS } from "../../pinata"
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { useSelector, useDispatch } from "react-redux"
+import { save } from "../../actions/nftActions"
 
 export default function PreviewModal({
-	previewOpen,
-	setImageLoaded,
-	activeImage,
-	isImageFromPrompt,
-	handlePreviewClose,
-	imageLoaded,
+  previewOpen,
+  setImageLoaded,
+  activeImage,
+  isImageFromPrompt,
+  handlePreviewClose,
+  imageLoaded,
 }) {
-	const navigate = useNavigate()
-	const ethers = require("ethers")
+  const dispatch = useDispatch()
+  const ethers = require("ethers")
 
-	const [formParams, updateFormParams] = useState({
-		name: "",
-		description: activeImage.prompt,
-		price: "",
-	})
+  const userSignin = useSelector((state) => state.userSignin)
+  const { userInfo } = userSignin
 
-	//This function uploads the metadata to IPFS
-	const uploadMetadataToIPFS = async () => {
-		const { name, description, price } = formParams
-		//Make sure that none of the fields are empty
-		if (!name || !description || !price || !activeImage.src) {
-			console.log("Please fill all the fields!")
-			return -1
-		}
+  const saveNft = useSelector((state) => state.saveNft)
+  const { error } = saveNft
 
-		const nftJSON = {
-			name,
-			description,
-			price,
-			image: activeImage.src,
-			timestamp: Date.now(),
-		}
+  const [formParams, updateFormParams] = useState({
+    name: "",
+    description: activeImage.prompt,
+    price: "",
+  })
+  const [tx, setTx] = useState("")
 
-		try {
-			//upload the metadata JSON to IPFS
-			const response = await uploadJSONToIPFS(nftJSON)
-			if (response.success === true) {
-				console.log("Uploaded JSON to Pinata: ", response)
+  const handleSave = () => {
+    if (userInfo) {
+      dispatch(
+        save(
+          activeImage.src,
+          formParams.name,
+          formParams.description,
+          formParams.price,
+          userInfo._id
+        )
+      )
+      if (!error) {
+        toast.success("Nft saved to your list.")
+      }
+    }
+  }
+  //This function uploads the metadata to IPFS
+  const uploadMetadataToIPFS = async () => {
+    const { name, description, price } = formParams
+    //Make sure that none of the fields are empty
+    if (!name || !description || !price || !activeImage.src) {
+      console.log("Please fill all the fields!")
+      return -1
+    }
 
-				return response.pinataURL
-			}
-		} catch (e) {
-			console.log("error uploading JSON metadata:", e)
-		}
-	}
+    const nftJSON = {
+      name,
+      description,
+      price,
+      image: activeImage.src,
+      timestamp: Date.now(),
+    }
 
-	const listNFT = async e => {
-		e.preventDefault()
+    try {
+      //upload the metadata JSON to IPFS
+      const response = await uploadJSONToIPFS(nftJSON)
+      if (response.success === true) {
+        console.log("Uploaded JSON to Pinata: ", response)
 
-		//Upload data to IPFS
-		try {
-			const metadataURL = await uploadMetadataToIPFS()
-			if (metadataURL === -1) return
-			//After adding your Hardhat network to your metamask, this code will get providers and signers
-			const provider = await new ethers.providers.Web3Provider(window.ethereum)
-			const signer = await provider.getSigner()
+        return response.pinataURL
+      }
+    } catch (e) {
+      console.log("error uploading JSON metadata:", e)
+    }
+  }
 
-			console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
+  const listNFT = async (e) => {
+    e.preventDefault()
 
-			//Pull the deployed contract instance
-			let contract = new ethers.Contract(
-				Marketplace.address,
-				Marketplace.abi,
-				signer
-			)
+    //Upload data to IPFS
+    try {
+      const metadataURL = await uploadMetadataToIPFS()
+      if (metadataURL === -1) return
+      //After adding your Hardhat network to your metamask, this code will get providers and signers
+      const provider = await new ethers.providers.Web3Provider(window.ethereum)
+      const signer = await provider.getSigner()
 
-			//massage the params to be sent to the create NFT request
-			const price = ethers.utils.parseUnits(formParams.price, "ether")
-			let listingPrice = await contract.getListPrice()
-			listingPrice = listingPrice.toString()
+      console.log("Uploading NFT(takes 5 mins).. please dont click anything!")
+      //Pull the deployed contract instance
+      let contract = new ethers.Contract(
+        Marketplace.address,
+        Marketplace.abi,
+        signer
+      )
 
-			//actually create the NFT
-			let transaction = await contract.createToken(metadataURL, price, {
-				value: listingPrice,
-			})
-			await transaction.wait()
+      //massage the params to be sent to the create NFT request
+      const price = ethers.utils.parseUnits(formParams.price, "ether")
+      let listingPrice = await contract.getListPrice()
+      listingPrice = listingPrice.toString()
 
-			alert("Successfully listed your NFT!")
+      // actually create the NFT
+      let transaction = await contract.createToken(metadataURL, price, {
+        value: listingPrice,
+      })
+      await transaction.wait()
+      setTx(transaction.hash)
+      alert("Successfully listed your NFT! :: ")
+      localStorage.removeItem("newlyGeneratedNFT")
+      activeImage = []
+      previewOpen = false
+      updateFormParams({ name: "", description: "", price: "" })
+      // navigate("/marketplace")
+    } catch (e) {
+      alert("Upload error" + e)
+    }
+  }
 
-			localStorage.removeItem("newlyGeneratedNFT")
-			activeImage = []
-			previewOpen = false
-			updateFormParams({ name: "", description: "", price: "" })
-			navigate("/marketplace")
-		} catch (e) {
-			alert("Upload error" + e)
-		}
-	}
+  // For responsive sizes of textfield
+  const getSizeByBreakpoint = () => {
+    const { innerWidth } = window
+    if (innerWidth >= 900) {
+      return "" // Medium screens (md breakpoint)
+    } else {
+      return "small" // Default size for small screens
+    }
+  }
 
-	// For responsive sizes of textfield
-	const getSizeByBreakpoint = () => {
-		const { innerWidth } = window
-		if (innerWidth >= 900) {
-			return "" // Medium screens (md breakpoint)
-		} else {
-			return "small" // Default size for small screens
-		}
-	}
-
-	return (
+  return (
     <Modal
       open={previewOpen}
       onClose={handlePreviewClose}
@@ -270,12 +293,37 @@ export default function PreviewModal({
                     color: "#fff !important",
                     "&:hover": { backgroundColor: "#C83B55" },
                   }}
+                  onClick={() => {
+                    handleSave()
+                  }}
+                >
+                  Add To Your List
+                </Button>
+
+                <Button
+                  fullWidth
+                  variant='contained'
+                  sx={{
+                    mt: 2,
+                    mb: 2,
+                    backgroundColor: "#F25672",
+                    color: "#fff !important",
+                    "&:hover": { backgroundColor: "#C83B55" },
+                  }}
                   onClick={(e) => {
                     listNFT(e)
                   }}
                 >
                   Mint
                 </Button>
+
+                {tx ? (
+                  <a href={`https://mumbai.polygonscan.com/tx/${tx}`}>
+                    view on polygon scan
+                  </a>
+                ) : (
+                  <></>
+                )}
               </Box>
             )}
           </Box>

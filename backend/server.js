@@ -4,12 +4,14 @@ import mongoose from "mongoose"
 import path from "path"
 import userRouter from "./userRouter.js"
 import nftRouter from "./nftRouter.js"
+// import cors from "cors"
 
 dotenv.config()
 
 const app = express()
 
 // Below two lines converts form post data to json format in req body
+// app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -29,21 +31,19 @@ mongoose
   })
 app.use("/api/users", userRouter)
 app.use("/api/nft", nftRouter)
-// app.use("/api/mint", mintRouter)
 
 const __dirname = path.resolve()
+
+app.use("/aiassets", express.static(path.join(__dirname, "/aiassets")))
 app.use(express.static(path.join(__dirname, "/frontend/build")))
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
 )
 
-app.get("/", (req, res) => {
-  res.send("Server is ready")
-})
-
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message })
 })
+
 
 const port = process.env.PORT || 8001
 app.listen(port, () => {
