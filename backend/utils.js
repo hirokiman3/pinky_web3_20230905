@@ -60,6 +60,7 @@ export const uploadFileToIPFS = async (file, name, username) => {
   const metadata = JSON.stringify({
     name: name,
     keyvalues: {
+      prompt: name,
       username: username,
     },
   })

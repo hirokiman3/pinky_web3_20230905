@@ -31,6 +31,7 @@ function App() {
     return storedCurrentAddress ? storedCurrentAddress : addr
   })
 
+
   useEffect(() => {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light")
     if (isDarkMode) {
@@ -42,6 +43,7 @@ function App() {
     }
 
     localStorage.setItem("walletAddress", currentAddress ? currentAddress : "")
+
     if (currentAddress) {
       setIsWalletConnected(true)
     } else {
@@ -89,20 +91,20 @@ function App() {
             <Route index path='/' element={<Home />} />
             <Route path='*' exact element={<Error404 />} />
           </Routes>
-          <ToastContainer
-            position='top-center'
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme='dark'
-          />
         </ThemeProvider>
       </Context.Provider>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+      />
     </Router>
   )
 }

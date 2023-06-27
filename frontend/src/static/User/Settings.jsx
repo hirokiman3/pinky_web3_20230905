@@ -2,17 +2,14 @@ import "./Style.css"
 
 import { Context } from "../../App"
 import Navbar from "../../components/Navbar"
-import { useNavigate } from "react-router-dom"
 import { Box, Button, Container, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
 import React, { useEffect, useState, useContext } from "react"
 import { USER_UPDATE_PROFILE_RESET } from "../../constants/userConstants"
 import { updateUserProfile } from "../../actions/userActions"
-import {  toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { toast } from "react-toastify"
 
 export default function Settings() {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const { isWalletConnected, currentAddress, setCurrentAddress } =
@@ -62,8 +59,8 @@ export default function Settings() {
         })
     } catch (error) {
       setCurrentAddress(null)
-      console.log("Error occured while connecting wallet: ", error.message)
-      navigate("/")
+      toast.error("Error : " + error.message)
+      // navigate("/")
     }
   }
 

@@ -49,7 +49,6 @@ export default function YourNfts() {
           price,
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
-          owner: i.owner,
           image: meta.image,
           name: meta.name,
           description: meta.description,

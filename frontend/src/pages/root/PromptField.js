@@ -38,7 +38,7 @@ export default function PromptField() {
   const [activeImage, setActiveImage] = useState({
     id: "",
     src: "",
-    prompt: "",
+    prompt: prompt,
     user: "",
     date: "",
   })
