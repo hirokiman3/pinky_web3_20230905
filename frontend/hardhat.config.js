@@ -1,10 +1,15 @@
 require("@nomiclabs/hardhat-waffle")
 require("@nomiclabs/hardhat-ethers")
+require("@nomiclabs/hardhat-etherscan")
 require("dotenv").config()
 const fs = require("fs")
 // const infuraId = fs.readFileSync(".infuraid").toString().trim() || "";
 
-const { REACT_APP_ALCHEMY_API_URL, REACT_APP_PRIVATE_KEY } = process.env
+const {
+  REACT_APP_ALCHEMY_API_URL,
+  REACT_APP_PRIVATE_KEY,
+  REACT_APP_ETHSCAN_KEY,
+} = process.env
 
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners()
@@ -44,7 +49,7 @@ task(
     )
     console.log(flattened)
   })
-  
+
 module.exports = {
   defaultNetwork: "mumbai",
   networks: {
@@ -62,5 +67,8 @@ module.exports = {
         runs: 200,
       },
     },
+  },
+  etherscan: {
+    apiKey: REACT_APP_ETHSCAN_KEY,
   },
 }
