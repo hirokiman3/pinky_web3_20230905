@@ -23,23 +23,20 @@ function SavedList() {
   const { loading, error, nfts } = myNftList
   const ethers = require("ethers")
 
-  // const [id, setId] = useState("")
-  // const [name, setName] = useState("")
-  // const [description, setDescription] = useState("")
-  const [price, setPrice] = useState("")
-  // const [image, setImage] = useState("")
+  const deleteNft = async (id) => {
+    const { data } = await axios.delete(`/api/nft/${id}`)
+    if (data.nft) {
+      // window.location.reload()
+    } else {
+      toast.error(data.message)
+    }
+  }
 
-  //This function uploads the metadata to IPFS
-  const uploadMetadataToIPFS = async (id) => {
-    //Make sure that none of the fields are empty
-    // if (!name || !description || !price || !image) {
-    //   toast.warn("Please fill all the fields!")
-    //   return -1
-    // }
+  const listNFT = (id) => {
+    //Upload data to IPFS
     let nftJSON = {}
-    nfts.map((item) => {
+    nfts.map(async (item) => {
       if (item._id === id) {
-        setPrice(item.price)
         nftJSON = {
           name: item.title,
           description: item.desc,
@@ -48,67 +45,53 @@ function SavedList() {
           timestamp: Date.now(),
         }
       }
-      return null
-    })
-    try {
-      //upload the metadata JSON to IPFS
-      const response = await uploadJSONToIPFS(nftJSON)
-      if (response.success === true) {
-        console.log("Uploaded JSON to Pinata: ", response)
+      try {
+        //upload the metadata JSON to IPFS
+        const response = await uploadJSONToIPFS(nftJSON)
+        if (response.success === true) {
+          console.log("Uploaded JSON to Pinata: ", response)
+          if (response.pinataURL === -1) return
 
-        return response.pinataURL
+          //After adding your Hardhat network to your metamask, this code will get providers and signers
+          const provider = await new ethers.providers.Web3Provider(
+            window.ethereum
+          )
+          const signer = await provider.getSigner()
+
+          toast.info(
+            "Uploading NFT(takes 5 mins).. please dont click anything!"
+          )
+
+          //Pull the deployed contract instance
+          let contract = new ethers.Contract(
+            Marketplace.address,
+            Marketplace.abi,
+            signer
+          )
+
+          //massage the params to be sent to the create NFT request
+          const price = ethers.utils.parseUnits(item.price, "ether")
+          let listingPrice = await contract.getListPrice()
+          listingPrice = listingPrice.toString()
+
+          // actually create the NFT
+          let transaction = await contract.createToken(
+            response.pinataURL,
+            price,
+            {
+              value: listingPrice,
+            }
+          )
+          await transaction.wait()
+          setTx(transaction.hash)
+          deleteNft(id)
+          localStorage.removeItem("newlyGeneratedNFT")
+          toast.success("Successfully listed your NFT!")
+        }
+      } catch (e) {
+        console.log("error uploading JSON metadata:", e)
       }
-    } catch (e) {
-      console.log("error uploading JSON metadata:", e)
-    }
-  }
-
-  const deleteNft = async (id) => {
-    const { data } = await axios.delete(`/api/nft/${id}`)
-    if (data.nft) {
-      window.location.reload()
-    } else {
-      toast.error(data.message)
-    }
-  }
-
-  const listNFT = async (id) => {
-    //Upload data to IPFS
-
-    try {
-      const metadataURL = await uploadMetadataToIPFS(id)
-      if (metadataURL === -1) return
-      //After adding your Hardhat network to your metamask, this code will get providers and signers
-      const provider = await new ethers.providers.Web3Provider(window.ethereum)
-      const signer = await provider.getSigner()
-
-      toast.info("Uploading NFT(takes 5 mins).. please dont click anything!")
-
-      //Pull the deployed contract instance
-      let contract = new ethers.Contract(
-        Marketplace.address,
-        Marketplace.abi,
-        signer
-      )
-
-      //massage the params to be sent to the create NFT request
-      const pricee = ethers.utils.parseUnits(price, "ether")
-      let listingPrice = await contract.getListPrice()
-      listingPrice = listingPrice.toString()
-
-      // actually create the NFT
-      let transaction = await contract.createToken(metadataURL, pricee, {
-        value: listingPrice,
-      })
-      await transaction.wait()
-      setTx(transaction.hash)
-      toast.success("Successfully listed your NFT!")
-      deleteNft(id)
-      localStorage.removeItem("newlyGeneratedNFT")
-    } catch (e) {
-      toast.error("Error occured while listing your NFT!" + e)
-      console.log(e.message)
-    }
+    })
   }
 
   useEffect(() => {
@@ -178,7 +161,7 @@ function SavedList() {
 
                   <Button
                     id={item._id}
-                    disabled={!isWalletConnected}
+                    disabled={!isWalletConnected || !tx}
                     fullWidth
                     variant='contained'
                     sx={{
