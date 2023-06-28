@@ -54,6 +54,7 @@ export default function PromptField() {
 
   const handlePreviewClose = () => {
     setOpenConfirmDialog(true)
+    localStorage.removeItem("newlyGeneratedNFT")
   }
   const handleConfirmPreviewClose = () => {
     setImageLoaded(false)
@@ -63,6 +64,7 @@ export default function PromptField() {
   }
   const handleClose = () => {
     setOpenConfirmDialog(false)
+    window.location.reload()
   }
 
   useEffect(() => {
@@ -138,8 +140,15 @@ export default function PromptField() {
               fontSize: "16px",
               fontFamily: "Poppins",
             }}
+            value={prompt}
             placeholder='A mystical forest at twilight, where ancient trees stand tall and majestic.'
-            onChange={(e) => setPrompt(e.target.value)}
+            onChange={(e) => {
+              setPrompt(e.target.value)
+              setActiveImage({
+                ...activeImage,
+                prompt: prompt,
+              })
+            }}
           ></textarea>
           <Button
             sx={{

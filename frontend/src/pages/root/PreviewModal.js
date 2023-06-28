@@ -51,12 +51,12 @@ export default function PreviewModal({
       }
     }
   }
+  const { name, description, price } = formParams
   //This function uploads the metadata to IPFS
   const uploadMetadataToIPFS = async () => {
-    const { name, description, price } = formParams
     //Make sure that none of the fields are empty
     if (!name || !description || !price || !activeImage.src) {
-      console.log("Please fill all the fields!")
+      toast.warn("Please fill all the fields!")
       return -1
     }
 
@@ -74,6 +74,7 @@ export default function PreviewModal({
       if (response.success === true) {
         console.log("Uploaded JSON to Pinata: ", response)
 
+        console.log("Uploaded JSON to Pinata : ", response.pinataURL)
         return response.pinataURL
       }
     } catch (e) {
@@ -117,6 +118,7 @@ export default function PreviewModal({
       activeImage = []
       previewOpen = false
       updateFormParams({ name: "", description: "", price: "" })
+
       // navigate("/marketplace")
     } catch (e) {
       alert("Upload error" + e)
@@ -241,7 +243,7 @@ export default function PreviewModal({
                   onChange={(e) =>
                     updateFormParams({ ...formParams, name: e.target.value })
                   }
-                  value={formParams.name}
+                  value={name}
                   autoFocus
                   size={getSizeByBreakpoint()}
                 />
@@ -253,7 +255,7 @@ export default function PreviewModal({
                   label='Description'
                   type='text'
                   id='desc'
-                  value={formParams.description}
+                  value={description}
                   onChange={(e) =>
                     updateFormParams({
                       ...formParams,
@@ -273,7 +275,7 @@ export default function PreviewModal({
                   type='number'
                   id='price'
                   min='0'
-                  value={formParams.price}
+                  value={price}
                   inputProps={{
                     step: "0.00001",
                   }}
