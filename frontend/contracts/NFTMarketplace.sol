@@ -103,7 +103,8 @@ contract NFTMarketplace is ERC721URIStorage, Ownable{
             true
         );
 
-        _transfer(msg.sender, address(this), tokenId);
+        // address(this)
+        _transfer(msg.sender, msg.sender, tokenId);
         //Emit the event for successful transfer. The frontend parses this message and updates the end user
         emit TokenListedSuccess(
             tokenId,
