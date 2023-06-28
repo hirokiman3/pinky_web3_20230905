@@ -23,28 +23,33 @@ function SavedList() {
   const { loading, error, nfts } = myNftList
   const ethers = require("ethers")
 
-  const [id, setId] = useState("")
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
+  // const [id, setId] = useState("")
+  // const [name, setName] = useState("")
+  // const [description, setDescription] = useState("")
   const [price, setPrice] = useState("")
-  const [image, setImage] = useState("")
+  // const [image, setImage] = useState("")
+
   //This function uploads the metadata to IPFS
-  const uploadMetadataToIPFS = async () => {
-    console.log(name + " - " + description + " - " + price + " - " + image)
+  const uploadMetadataToIPFS = async (id) => {
     //Make sure that none of the fields are empty
-    if (!name || !description || !price || !image) {
-      toast.warn("Please fill all the fields!")
-      return -1
-    }
-
-    const nftJSON = {
-      name,
-      description,
-      price,
-      image: image,
-      timestamp: Date.now(),
-    }
-
+    // if (!name || !description || !price || !image) {
+    //   toast.warn("Please fill all the fields!")
+    //   return -1
+    // }
+    let nftJSON = {}
+    nfts.map((item) => {
+      if (item._id === id) {
+        setPrice(item.price)
+        nftJSON = {
+          name: item.title,
+          description: item.desc,
+          price: item.price,
+          image: item.path,
+          timestamp: Date.now(),
+        }
+      }
+      return null
+    })
     try {
       //upload the metadata JSON to IPFS
       const response = await uploadJSONToIPFS(nftJSON)
@@ -67,10 +72,11 @@ function SavedList() {
     }
   }
 
-  const listNFT = async () => {
+  const listNFT = async (id) => {
     //Upload data to IPFS
+
     try {
-      const metadataURL = await uploadMetadataToIPFS()
+      const metadataURL = await uploadMetadataToIPFS(id)
       if (metadataURL === -1) return
       //After adding your Hardhat network to your metamask, this code will get providers and signers
       const provider = await new ethers.providers.Web3Provider(window.ethereum)
@@ -100,7 +106,8 @@ function SavedList() {
       deleteNft(id)
       localStorage.removeItem("newlyGeneratedNFT")
     } catch (e) {
-      toast.error("Error occured while listing your NFT!")
+      toast.error("Error occured while listing your NFT!" + e)
+      console.log(e.message)
     }
   }
 
@@ -170,6 +177,7 @@ function SavedList() {
                   </div>
 
                   <Button
+                    id={item._id}
                     disabled={!isWalletConnected}
                     fullWidth
                     variant='contained'
@@ -181,12 +189,7 @@ function SavedList() {
                       "&:hover": { backgroundColor: "#C83B55" },
                     }}
                     onClick={(e) => {
-                      setId(item._id)
-                      setName(item.title)
-                      setDescription(item.desc)
-                      setPrice(item.price)
-                      setImage(item.path)
-                      listNFT()
+                      listNFT(e.target.id)
                     }}
                   >
                     {isWalletConnected ? "Mint" : "Connect Wallet"}
