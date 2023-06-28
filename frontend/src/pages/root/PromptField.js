@@ -46,7 +46,7 @@ export default function PromptField() {
   const handleGenerate = async () => {
     if (userInfo) {
       setOpen(true)
-      dispatch(generate(prompt, 1, "256x256", userInfo))
+      dispatch(generate(prompt, 1, "512x512", userInfo))
     } else {
       navigate("/signin")
     }
