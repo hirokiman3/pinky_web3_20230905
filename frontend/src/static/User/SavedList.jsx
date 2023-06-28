@@ -30,6 +30,7 @@ function SavedList() {
   const [image, setImage] = useState("")
   //This function uploads the metadata to IPFS
   const uploadMetadataToIPFS = async () => {
+    console.log(name + " - " + description + " - " + price + " - " + image)
     //Make sure that none of the fields are empty
     if (!name || !description || !price || !image) {
       toast.warn("Please fill all the fields!")
