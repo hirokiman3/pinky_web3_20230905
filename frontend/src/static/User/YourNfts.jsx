@@ -40,7 +40,10 @@ export default function YourNfts() {
 
     const items = await Promise.all(
       transaction.map(async (i) => {
+
         var tokenURI = await contract.tokenURI(i.tokenId)
+        tokenURI = GetIpfsUrlFromPinata(tokenURI)
+        
         let meta = await axios.get(tokenURI)
         meta = meta.data
 
