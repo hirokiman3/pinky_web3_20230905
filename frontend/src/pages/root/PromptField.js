@@ -55,6 +55,7 @@ export default function PromptField() {
   const handlePreviewClose = () => {
     setOpenConfirmDialog(true)
     localStorage.removeItem("newlyGeneratedNFT")
+    window.location.reload()
   }
   const handleConfirmPreviewClose = () => {
     setImageLoaded(false)
