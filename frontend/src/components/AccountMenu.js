@@ -134,7 +134,7 @@ export default function AccountMenu() {
           <ListItemIcon>
             <CollectionsIcon fontSize='small' />
           </ListItemIcon>
-          Marketplace
+          PINKY NFTs
         </MenuItem>
         <Divider />
         {/* <MenuItem onClick={handleClose}>

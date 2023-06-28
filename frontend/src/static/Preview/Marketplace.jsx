@@ -30,7 +30,6 @@ export default function Marketplace() {
     const items = await Promise.all(
       transaction.map(async (i) => {
         var tokenURI = await contract.tokenURI(i.tokenId)
-
         tokenURI = GetIpfsUrlFromPinata(tokenURI)
         let meta = await axios.get(tokenURI)
         meta = meta.data
@@ -60,7 +59,7 @@ export default function Marketplace() {
       <Container>
         <Box sx={{ marginTop: 10, marginBottom: 5 }}>
           <h2 className='text-4xl font-bold mb-1 text-pink-600 dark:text-pink-500'>
-            Marketplace
+            PINKY NFTs
           </h2>
           <h5 className='text-slate-800 dark:text-slate-200'>
             See how other creators created their art works.
