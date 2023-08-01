@@ -3,7 +3,7 @@ import { Context } from "../../App"
 import Navbar from "../../components/Navbar"
 import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Container } from "@mui/material"
+import { Container } from "@mui/material"
 import { GetIpfsUrlFromPinata } from "../../utils"
 import MarketplaceJSON from "../../Marketplace.json"
 
@@ -101,11 +101,6 @@ export default function Nft(props) {
                   <p className='dark:text-gray-300 text-gray-500'>
                     {data.price || "0.004"} MATIC
                   </p>
-                </div>
-                <div className='item mb-2'>
-                  <Button variant='contained' className='w-full md:w-[12rem]'>
-                    List to OpenSea
-                  </Button>
                 </div>
               </div>
             </div>
