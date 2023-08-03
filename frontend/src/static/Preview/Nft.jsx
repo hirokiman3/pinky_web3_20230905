@@ -3,15 +3,13 @@ import { Context } from "../../App"
 import Navbar from "../../components/Navbar"
 import { useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Container } from "@mui/material"
+import { Button, Container } from "@mui/material"
 import { GetIpfsUrlFromPinata } from "../../utils"
 import MarketplaceJSON from "../../Marketplace.json"
 
 export default function Nft(props) {
   const [data, updateData] = useState({})
   const [dataFetched, updateDataFetched] = useState(false)
-  // const [message, updateMessage] = useState("")
-  // const [currAddress, updateCurrAddress] = useState("0x")
   const { isWalletConnected } = useContext(Context)
 
   const getNFTData = async (tokenId) => {
@@ -43,41 +41,12 @@ export default function Nft(props) {
       image: meta.image,
       name: meta.name,
       description: meta.description,
+      signature: signer,
     }
     console.log(item)
     updateData(item)
     updateDataFetched(true)
-    // console.log("address", addr)
-    // updateCurrAddress(addr)
   }
-
-  // const buyNFT = async (tokenId) => {
-  //   try {
-  //     const ethers = require("ethers")
-  //     //After adding your Hardhat network to your metamask, this code will get providers and signers
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum)
-  //     const signer = provider.getSigner()
-
-  //     //Pull the deployed contract instance
-  //     let contract = new ethers.Contract(
-  //       MarketplaceJSON.address,
-  //       MarketplaceJSON.abi,
-  //       signer
-  //     )
-  //     const salePrice = ethers.utils.parseUnits(data.price, "ether")
-  //     updateMessage("Buying the NFT... Please Wait (Upto 5 mins)")
-  //     //run the executeSale function
-  //     let transaction = await contract.executeSale(tokenId, {
-  //       value: salePrice,
-  //     })
-  //     await transaction.wait()
-
-  //     alert("You successfully bought the NFT!")
-  //     updateMessage("")
-  //   } catch (e) {
-  //     alert("Upload Error" + e)
-  //   }
-  // }
 
   const params = useParams()
   const tokenId = params.tokenId
@@ -133,21 +102,12 @@ export default function Nft(props) {
                     {data.price || "0.004"} MATIC
                   </p>
                 </div>
-              </div>
-              {/* {currAddress !== data.owner && currAddress !== data.seller ? (
-                <Button
-                  variant='contained'
-                  className='w-full md:w-[12rem]'
-                  onClick={() => buyNFT(tokenId)}
-                >
-                  Mint Now
-                </Button>
-              ) : (
-                <div className='text-emerald-700'>
-                  You are the owner of this NFT
+                <div className='item mb-2'>
+                  <Button variant='contained' className='w-full md:w-[12rem]'>
+                    List to OpenSea
+                  </Button>
                 </div>
-              )} */}
-              {/* <div className='text-green text-center mt-3'>{message}</div> */}
+              </div>
             </div>
           </div>
         </div>

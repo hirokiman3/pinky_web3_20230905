@@ -1,9 +1,10 @@
 import { Container } from "@mui/material"
 import Navbar from "../../components/Navbar"
 import PromptField from "../../pages/root/PromptField"
+import openaiLogo from "../../assets/images/ChatGPT_logo.svg"
 
 export default function Home() {
-	return (
+  return (
     <>
       <Navbar />
       <Container>
@@ -28,7 +29,7 @@ export default function Home() {
           </h4>
           <div className='icons flex gap-2 items-center'>
             <img
-              src='https://img.uxwing.com/wp-content/themes/uxwing/download/brands-social-media/chatgpt-icon.svg'
+              src={openaiLogo}
               className='w-[38px]'
               alt='OpenAI ChatGPT Logo'
             />
