@@ -8,6 +8,7 @@ import { writeFileSync, createReadStream } from "fs"
 import Nft from "./nftModal.js"
 import User from "./userModel.js"
 import expressAsyncHandler from "express-async-handler"
+import request from "request"
 
 dotenv.config()
 const nftRouter = express.Router()
@@ -25,29 +26,48 @@ nftRouter.get(
 
 nftRouter.post("/generate", async (req, res) => {
   try {
-    const { prompt, no, dimension, userInfo } = req.body
-    let config = ""
+    const { prompt, model, userInfo } = req.body
     let result = null
 
-    const u = await User.findById(userInfo._id)
+    var options = {
+      method: "POST",
+      url: "https://stablediffusionapi.com/api/v4/dreambooth",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        key: process.env.STABLE,
+        model_id: model,
+        prompt: prompt,
+        width: "512",
+        height: "512",
+        samples: "1",
+        num_inference_steps: "30",
+        safety_checker: "no",
+        enhance_prompt: "yes",
+        seed: null,
+        guidance_scale: 7.5,
+        multi_lingual: "no",
+        panorama: "no",
+        self_attention: "no",
+        upscale: "no",
+        embeddings_model: null,
+        lora_model: null,
+        tomesd: "yes",
+        use_karras_sigmas: "yes",
+        vae: null,
+        lora_strength: null,
+        scheduler: "UniPCMultistepScheduler",
+        webhook: null,
+        track_id: null,
+      }),
+    }
+    request(options, async function (error, response) {
+      result = JSON.parse(response.body)
+      console.log(result.output[0])
 
-    if (u.trial) {
-      config = new Configuration({
-        organization: process.env.OPENAI_ORG_ID,
-        apiKey: process.env.OPENAI_API_KEY,
-      })
-      const openai = new OpenAIApi(config)
-      const user = await User.findById(req.body.userInfo._id)
-      if (user) {
-        user.trial = false
-        await user.save()
-      }
-      result = await openai.createImage({
-        prompt,
-        size: dimension,
-        user: userInfo.username,
-      })
-      const url = result.data.data[0].url
+      let url = result.output[0]
+
       // Save image to disk
       const imageResult = await fetch(url, { mode: "no-cors" })
       const blob = await imageResult.blob()
@@ -66,44 +86,7 @@ nftRouter.post("/generate", async (req, res) => {
         path: p,
         date: date,
       })
-    } else {
-      if (userInfo.org_id && userInfo.secret) {
-        config = new Configuration({
-          organization: userInfo.org_id,
-          apiKey: userInfo.secret,
-        })
-        const openai = new OpenAIApi(config)
-        result = await openai.createImage({
-          prompt,
-          size: dimension,
-          user: userInfo.username,
-        })
-        const url = result.data.data[0].url
-        // Save image to disk
-        const imageResult = await fetch(url, { mode: "no-cors" })
-        const blob = await imageResult.blob()
-        const date = Date.now()
-        const imagePath = `./aiassets/${userInfo.username}-${date}.png`
-        writeFileSync(imagePath, Buffer.from(await blob.arrayBuffer()))
-
-        const __dirname = path.resolve()
-        const filepath = path.join(__dirname, imagePath)
-        const image = createReadStream(filepath)
-
-        // now image converted like file object...
-        let p = await uploadFileToIPFS(image, prompt, userInfo.username)
-
-        res.send({
-          path: p,
-          date: date,
-        })
-      } else {
-        res.send({
-          path: null,
-          message: "Your trial is expired. Update your OpenAI details!",
-        })
-      }
-    }
+    })
   } catch (error) {
     if (error.response) {
       console.log("Image error status: ", error.response.status)
@@ -140,3 +123,6 @@ nftRouter.delete(
   })
 )
 export default nftRouter
+
+
+
