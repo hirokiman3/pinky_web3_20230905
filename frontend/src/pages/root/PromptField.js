@@ -16,6 +16,11 @@ import { useSelector, useDispatch } from "react-redux"
 import LoadingModal from "../../components/LoadingModal"
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt"
 import { toast } from "react-toastify"
+import Radio from "@mui/material/Radio"
+import RadioGroup from "@mui/material/RadioGroup"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import FormControl from "@mui/material/FormControl"
+import FormLabel from "@mui/material/FormLabel"
 
 export default function PromptField() {
   const userSignin = useSelector((state) => state.userSignin)
@@ -29,7 +34,7 @@ export default function PromptField() {
 
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState("")
-
+  const [model, setModel] = useState("")
   const [openConfirmDialog, setOpenConfirmDialog] = useState(false)
   const [previewOpen, setPreviewOpen] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
@@ -43,10 +48,16 @@ export default function PromptField() {
     date: "",
   })
 
+  const handleChange = () => {
+    if (model === "chilloutmix") setModel("dream-shaper-8797")
+    else setModel("chilloutmix")
+    console.log(model)
+  }
+
   const handleGenerate = async () => {
     if (userInfo) {
       setOpen(true)
-      dispatch(generate(prompt, 1, "512x512", userInfo))
+      dispatch(generate(prompt, model, userInfo))
     } else {
       navigate("/signin")
     }
@@ -166,6 +177,29 @@ export default function PromptField() {
             <ArrowRightAltIcon />
           </Button>
         </Box>
+        <FormControl>
+          <FormLabel id='demo-row-radio-buttons-group-label'>
+            Select Model
+          </FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby='demo-row-radio-buttons-group-label'
+            name='row-radio-buttons-group'
+            value={model}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value='chilloutmix'
+              control={<Radio />}
+              label='Realistic'
+            />
+            <FormControlLabel
+              value='dream-shaper-8797'
+              control={<Radio />}
+              label='Cartoonish'
+            />
+          </RadioGroup>
+        </FormControl>
         <LoadingModal open={open} setOpen={setOpen} />
         <PreviewModal
           previewOpen={previewOpen}

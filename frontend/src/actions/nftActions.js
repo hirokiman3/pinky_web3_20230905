@@ -11,37 +11,35 @@ import {
   NFT_LIST_FAIL,
 } from "../constants/nftConstants"
 
-export const generate =
-  (prompt, no, dimension, userInfo) => async (dispatch) => {
-    dispatch({
-      type: NFT_GENERATE_REQUEST,
-      payload: { prompt, no, dimension, userInfo },
+export const generate = (prompt, model, userInfo) => async (dispatch) => {
+  dispatch({
+    type: NFT_GENERATE_REQUEST,
+    payload: { prompt, model, userInfo },
+  })
+  try {
+    const { data } = await Axios.post("/api/nft/generate", {
+      prompt,
+      model,
+      userInfo,
     })
-    try {
-      const { data } = await Axios.post("/api/nft/generate", {
-        prompt,
-        no,
-        dimension,
-        userInfo,
-      })
-      dispatch({ type: NFT_GENERATE_SUCCESS, payload: data })
-      localStorage.setItem("newlyGeneratedNFT", JSON.stringify(data))
-    } catch (error) {
-      if (error.response) {
-        console.log("Image error status: ", error.response.status)
-        console.log("Image error data: ", error.response.data)
-      } else {
-        console.log("Image error message: ", error.message)
-      }
-      dispatch({
-        type: NFT_GENERATE_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      })
+    dispatch({ type: NFT_GENERATE_SUCCESS, payload: data })
+    localStorage.setItem("newlyGeneratedNFT", JSON.stringify(data))
+  } catch (error) {
+    if (error.response) {
+      console.log("Image error status: ", error.response.status)
+      console.log("Image error data: ", error.response.data)
+    } else {
+      console.log("Image error message: ", error.message)
     }
+    dispatch({
+      type: NFT_GENERATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
   }
+}
 
 export const save = (path, title, desc, price, userId) => async (dispatch) => {
   dispatch({
